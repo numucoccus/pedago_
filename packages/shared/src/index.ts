@@ -1,43 +1,16 @@
 // Pedago AI Shared Domain Contracts & Database Types
 
-export * from './database.types.js';
+export * from "./constants.js";
+export * from "./schemas.js";
+export * from "./types.js";
+export * from "./database.types.js";
 
-export type ModuleKey =
-  | "research"
-  | "teaching"
-  | "assessment"
-  | "student"
-  | "curriculum";
-
-export type AnalysisType =
-  | "research_gap"
-  | "research_evolution"
-  | "research_question"
-  | "research_decision"
-  | "teaching_pulse"
-  | "query_clustering"
-  | "exam_misconception"
-  | "student_portfolio"
-  | "lor_dossier"
-  | "curriculum_alignment";
-
-export type AnalysisStatus =
-  | "draft"
-  | "queued"
-  | "extracting"
-  | "indexing"
-  | "analyzing"
-  | "completed"
-  | "failed"
-  | "cancelled";
-
-export type WorkspaceRole = "owner" | "admin" | "faculty" | "reviewer";
-
+// Re-export common contract aliases and intelligence contracts for frontend & backend
 export interface Workspace {
   id: string;
   name: string;
   slug: string;
-  role?: WorkspaceRole;
+  role?: import("./constants.js").WorkspaceRole;
   description?: string;
   createdAt: string;
   updatedAt: string;
@@ -47,7 +20,7 @@ export interface UserProfile {
   id: string;
   email: string;
   name: string;
-  role: WorkspaceRole;
+  role: string;
   institution?: string;
   department?: string;
   avatarUrl?: string;
@@ -57,30 +30,40 @@ export interface DocumentRecord {
   id: string;
   workspaceId: string;
   title: string;
-  filename: string;
-  fileSize: number;
+  fileName?: string;
+  filename?: string;
+  filePath?: string;
   mimeType: string;
-  status: "uploaded" | "extracting" | "indexed" | "failed";
+  sizeBytes?: number;
+  fileSize?: number;
   pageCount?: number;
+  status: import("./database.types.js").DocumentProcessingStatus | import("./constants.js").DocumentStatus;
+  purpose?: string;
+  uploadedBy?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface EvidenceReference {
   id: string;
-  documentId?: string;
-  sourceUrl?: string;
   title: string;
-  locator?: string;
+  locator: string;
   excerpt: string;
+  sourceType?: import("./constants.js").EvidenceSourceType;
+  sourceUrl?: string;
+  documentId?: string;
+  chunkId?: string;
   publishedYear?: number;
+  confidence?: import("./constants.js").ConfidenceLevel;
 }
+
 
 export interface Finding {
   id: string;
   title: string;
   summary: string;
-  confidence: "low" | "medium" | "high";
+  category?: string;
+  confidence: import("./constants.js").ConfidenceLevel;
   evidence: EvidenceReference[];
   limitations: string[];
   requiresHumanReview: boolean;
@@ -88,7 +71,7 @@ export interface Finding {
 
 export interface AnalysisCreateInput {
   workspaceId: string;
-  type: AnalysisType;
+  type: import("./constants.js").AnalysisType;
   title: string;
   documentIds?: string[];
   input?: Record<string, unknown>;
@@ -98,9 +81,9 @@ export interface AnalysisCreateInput {
 export interface AnalysisRecord {
   id: string;
   workspaceId: string;
-  type: AnalysisType;
+  type: import("./constants.js").AnalysisType;
   title: string;
-  status: AnalysisStatus;
+  status: import("./constants.js").AnalysisStatus;
   progressPercent: number;
   currentStep?: string;
   documentIds: string[];
@@ -115,22 +98,6 @@ export interface AnalysisRecord {
   updatedAt: string;
 }
 
-// API Envelopes
-export interface ApiSuccess<T> {
-  data: T;
-  meta?: Record<string, unknown>;
-  requestId: string;
-}
-
-export interface ApiError {
-  error: {
-    code: string;
-    message: string;
-    details?: unknown;
-  };
-  requestId: string;
-}
-
 // Research Gap Verification Contracts
 export type GapVerdict =
   | "supported"
@@ -141,11 +108,19 @@ export type GapVerdict =
 export interface ResearchGapInput {
   topic: string;
   claimedGap: string;
+  method?: string;
   methodology?: string;
+  problem?: string;
+  populationContext?: string;
   population?: string;
+  yearFrom?: number;
+  yearTo?: number;
   yearRange?: [number, number];
+  sources?: ("openalex" | "semantic_scholar" | "crossref" | "arxiv")[];
+  maxResultsPerSource?: number;
   documentIds?: string[];
 }
+
 
 export interface PriorWorkItem {
   id: string;

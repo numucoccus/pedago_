@@ -1,66 +1,49 @@
-import { Request, Response, NextFunction } from 'express';
-import { supabaseAdmin } from '../config/supabase.js';
+import type { NextFunction, Request, Response } from "express";
+import type { TokenVerifier } from "../providers/auth/token-verifier.js";
+import { AppError } from "../utils/errors.js";
 
 export interface AuthenticatedUser {
   id: string;
-  email: string;
-  role?: string;
+  email: string | null;
+  role?: string | null;
 }
 
 export interface AuthenticatedRequest extends Request {
   user?: AuthenticatedUser;
+  auth?: { userId: string; email: string | null };
   accessToken?: string;
 }
 
-export async function authenticateUser(
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({
-      error: {
-        code: 'AUTH_REQUIRED',
-        message: 'Missing or invalid Authorization header',
-      },
-      requestId: (req.headers['x-request-id'] as string) || 'unknown',
-    });
-    return;
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  try {
-    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
-
-    if (error || !user) {
-      res.status(401).json({
-        error: {
-          code: 'UNAUTHORIZED',
-          message: 'Invalid or expired authentication token',
-        },
-        requestId: (req.headers['x-request-id'] as string) || 'unknown',
-      });
+/** Resolves the user strictly from the verified bearer token; request bodies never carry identity. */
+export function authenticate(verifier: TokenVerifier) {
+  return async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    const header = req.header("authorization");
+    if (!header || !header.toLowerCase().startsWith("bearer ")) {
+      next(AppError.authRequired("Missing bearer token"));
       return;
     }
+    const token = header.slice(7).trim();
+    if (!token) {
+      next(AppError.authRequired("Missing bearer token"));
+      return;
+    }
+    try {
+      const identity = await verifier.verify(token);
+      req.auth = { userId: identity.userId, email: identity.email };
+      (req as AuthenticatedRequest).user = {
+        id: identity.userId,
+        email: identity.email,
+        role: identity.role,
+      };
+      (req as AuthenticatedRequest).accessToken = token;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+}
 
-    req.user = {
-      id: user.id,
-      email: user.email || '',
-      role: user.role,
-    };
-    req.accessToken = token;
-
-    next();
-  } catch (err: unknown) {
-    res.status(500).json({
-      error: {
-        code: 'INTERNAL_ERROR',
-        message: 'Failed to authenticate user',
-      },
-      requestId: (req.headers['x-request-id'] as string) || 'unknown',
-    });
-  }
+export function requireAuth(req: Request): { userId: string; email: string | null } {
+  if (!req.auth) throw AppError.authRequired();
+  return req.auth;
 }
