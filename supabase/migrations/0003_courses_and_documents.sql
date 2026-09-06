@@ -58,11 +58,15 @@ CREATE TABLE public.documents (
   deleted_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE,
-  UNIQUE (workspace_id, content_hash, kind) WHERE deleted_at IS NULL
+  FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE
 );
 
 ALTER TABLE public.documents ENABLE ROW LEVEL SECURITY;
+
+-- Partial unique index for active documents
+CREATE UNIQUE INDEX idx_documents_workspace_content_hash_kind 
+  ON public.documents(workspace_id, content_hash, kind) 
+  WHERE deleted_at IS NULL;
 
 -- Document extractions table
 CREATE TABLE public.document_extractions (

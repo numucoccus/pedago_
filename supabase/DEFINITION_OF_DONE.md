@@ -1,3 +1,4 @@
+
 # Pedago AI Database Layer - Definition of Done
 
 This checklist verifies that all requirements from Part 2 have been completed.

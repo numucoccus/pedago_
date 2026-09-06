@@ -15,10 +15,7 @@ CREATE TABLE public.feedback_entries (
   confusion_score numeric(2,1) CHECK (confusion_score IS NULL OR (confusion_score >= 0 AND confusion_score <= 5)),
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE,
-  CHECK (source_kind != 'direct_student_feedback' OR source_kind NOT IN (
-    SELECT source_kind FROM public.feedback_entries WHERE source_kind = 'ai_hypothesis'
-  ))
+  FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE
 );
 
 ALTER TABLE public.feedback_entries ENABLE ROW LEVEL SECURITY;

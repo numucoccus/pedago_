@@ -35,11 +35,15 @@ CREATE TABLE public.research_works (
   metadata jsonb,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (source, external_id),
-  UNIQUE (doi) WHERE doi IS NOT NULL
+  UNIQUE (source, external_id)
 );
 
 ALTER TABLE public.research_works ENABLE ROW LEVEL SECURITY;
+
+-- Partial unique index for non-null DOIs
+CREATE UNIQUE INDEX idx_research_works_doi_unique 
+  ON public.research_works(doi) 
+  WHERE doi IS NOT NULL;
 
 -- Analysis-research works association
 CREATE TABLE public.analysis_research_works (
