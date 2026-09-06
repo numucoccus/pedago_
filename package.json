@@ -1,0 +1,23 @@
+{
+  "name": "pedago-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Evidence-first faculty intelligence and decision copilot.",
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.12"
+  }
+}
