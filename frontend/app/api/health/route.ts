@@ -8,19 +8,39 @@ export async function GET() {
 
     if (error) {
       return NextResponse.json(
-        { status: 'unhealthy', database: 'disconnected', error: error.message },
+        {
+          status: 'unhealthy',
+          service: '@pedago/frontend',
+          database: 'disconnected',
+          error: error.message,
+          timestamp: new Date().toISOString(),
+          version: '0.1.0',
+        },
         { status: 503 }
       );
     }
 
     return NextResponse.json(
-      { status: 'healthy', database: 'connected', timestamp: new Date().toISOString() },
+      {
+        status: 'healthy',
+        service: '@pedago/frontend',
+        database: 'connected',
+        timestamp: new Date().toISOString(),
+        version: '0.1.0',
+      },
       { status: 200 }
     );
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json(
-      { status: 'unhealthy', database: 'error', error: message },
+      {
+        status: 'unhealthy',
+        service: '@pedago/frontend',
+        database: 'error',
+        error: message,
+        timestamp: new Date().toISOString(),
+        version: '0.1.0',
+      },
       { status: 500 }
     );
   }
