@@ -43,7 +43,7 @@ export default function AnalysisDetailPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Link
         href="/dashboard"
         className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mb-2"

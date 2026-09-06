@@ -32,16 +32,16 @@ export default function TeachingHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
               <Radio className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               PulseAI Micro-Feedback Analysis
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Synthesize student exit slips and in-class lecture notes. Distinguishes direct feedback from AI hypotheses, generates 3-bullet action plans, and builds warm-up diagnostic questions.
             </p>
           </div>
           <Link
             href="/teaching/pulse"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Analyze Session Micro-Feedback</span>
             <ArrowRight className="h-4 w-4" />
@@ -54,16 +54,16 @@ export default function TeachingHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
               <Network className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Office-Hour Query Clustering & Triage
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Cluster student forum and office-hour inquiries. Disentangles conceptual confusion from administrative questions, maps to syllabus learning modules, and drafts broadcast announcements.
             </p>
           </div>
           <Link
             href="/teaching/query-clusters"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Triage Inquiries & Clusters</span>
             <ArrowRight className="h-4 w-4" />
@@ -81,14 +81,14 @@ export default function TeachingHubPage() {
           {analyses.map((ana) => (
             <div key={ana.id} className="py-3 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold text-foreground">{ana.title}</p>
-                <p className="text-[0.6875rem] text-muted-foreground mt-0.5">
+                <p className="text-sm font-semibold text-foreground">{ana.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Processed on {formatDate(ana.createdAt)}
                 </p>
               </div>
               <Link
                 href={`/analyses/${ana.id}`}
-                className="text-xs text-primary font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-primary font-medium hover:underline flex items-center gap-1"
               >
                 Inspect Action Plan →
               </Link>

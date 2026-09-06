@@ -64,15 +64,15 @@ export default function StudentsDirectoryPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-foreground">{std.studentName}</h4>
+                    <h4 className="text-base font-bold text-foreground">{std.studentName}</h4>
                     <span className="text-xs font-mono text-muted-foreground">
                       ({std.studentIdNumber})
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[0.625rem] font-bold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="px-2.5 py-0.5 rounded text-xs font-bold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                       {std.reviewStatus}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-sm text-muted-foreground mt-0.5">
                     {std.department} • Cumulative GPA: <strong className="text-foreground">{std.gpa}</strong>
                   </p>
                 </div>
@@ -81,15 +81,15 @@ export default function StudentsDirectoryPage() {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/students/portfolios/${std.id}`}
-                  className="px-3 py-1.5 rounded-lg border border-border bg-background text-xs font-medium text-foreground hover:bg-muted transition-colors flex items-center gap-1"
+                  className="px-3.5 py-2 rounded-xl border border-border bg-background text-sm font-medium text-foreground hover:bg-muted transition-colors flex items-center gap-1.5 shadow-2xs"
                 >
                   <span>View 360° Portfolio</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
 
                 <Link
                   href="/students/lor"
-                  className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 text-xs font-semibold transition-colors flex items-center gap-1"
+                  className="px-4 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 text-sm font-semibold transition-colors flex items-center gap-1.5"
                 >
                   <span>Generate LOR</span>
                 </Link>

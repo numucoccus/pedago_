@@ -35,16 +35,16 @@ export default function ResearchHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <CheckCircle2 className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Research Gap Verification
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Verify novelty claims against indexed peer-reviewed databases and target venue proceedings. Generates closest prior work matrices and reformulations.
             </p>
           </div>
           <Link
             href="/research/gap-verification"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Launch Gap Verification</span>
             <ArrowRight className="h-4 w-4" />
@@ -57,16 +57,16 @@ export default function ResearchHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
               <LineChart className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Research Evolution & Trend Detector
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Visualize method-frequency timelines, emerging architectural paradigms, declining techniques, and citation velocities across venues.
             </p>
           </div>
           <Link
             href="/research/evolution"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Explore Evolution Timelines</span>
             <ArrowRight className="h-4 w-4" />
@@ -79,16 +79,16 @@ export default function ResearchHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400">
               <BrainCircuit className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Research Question Stress Tester
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Evaluate research questions across 9 empirical dimensions (specificity, measurability, novelty evidence). Offers side-by-side improved reformulations.
             </p>
           </div>
           <Link
             href="/research/question-stress-test"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Stress Test a Question</span>
             <ArrowRight className="h-4 w-4" />
@@ -101,16 +101,16 @@ export default function ResearchHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <Sliders className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Research Decision Matrix Copilot
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Compare candidate research directions using a transparent weighted decision model (novelty, feasibility, data availability, method fit, expected impact).
             </p>
           </div>
           <Link
             href="/research/decisions"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Open Decision Matrix</span>
             <ArrowRight className="h-4 w-4" />
@@ -128,14 +128,14 @@ export default function ResearchHubPage() {
           {analyses.map((ana) => (
             <div key={ana.id} className="py-3 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold text-foreground">{ana.title}</p>
-                <p className="text-[0.6875rem] text-muted-foreground mt-0.5">
+                <p className="text-sm font-semibold text-foreground">{ana.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Verified on {formatDate(ana.createdAt)}
                 </p>
               </div>
               <Link
                 href={`/analyses/${ana.id}`}
-                className="text-xs text-primary font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-primary font-medium hover:underline flex items-center gap-1"
               >
                 Inspect Report →
               </Link>

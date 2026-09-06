@@ -25,6 +25,7 @@ import {
   CheckCircle2,
   FileText,
   Workflow,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDemo } from "@/lib/store/demo-context";
@@ -43,7 +44,7 @@ interface NavItem {
 
 const navSections: NavItem[] = [
   {
-    title: "Overview",
+    title: "Executive Overview",
     href: "/dashboard",
     icon: Compass,
   },
@@ -93,12 +94,12 @@ const navSections: NavItem[] = [
     ],
   },
   {
-    title: "Documents",
+    title: "Document Repository",
     href: "/documents",
     icon: FolderArchive,
   },
   {
-    title: "Settings",
+    title: "Settings & Audits",
     href: "/settings",
     icon: Settings,
   },
@@ -106,8 +107,9 @@ const navSections: NavItem[] = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { activeWorkspace } = useDemo();
-  const [collapsed, setCollapsed] = useState(false);
+  const { activeWorkspace, sidebarCollapsed, setSidebarCollapsed } = useDemo();
+  const collapsed = sidebarCollapsed;
+  const setCollapsed = setSidebarCollapsed;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     "Research Intelligence": true,
@@ -128,11 +130,11 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile hamburger button */}
+      {/* Mobile hamburger */}
       <div className="lg:hidden fixed top-3 left-3 z-40">
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 rounded-lg bg-card/80 backdrop-blur-md border border-border shadow-sm text-foreground hover:bg-muted"
+          className="p-2.5 rounded-xl bg-card border border-border shadow-md text-foreground hover:bg-muted"
           aria-label="Toggle Navigation"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -142,39 +144,39 @@ export function Sidebar() {
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-30 bg-background/80 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-30 bg-black/60"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Sidebar container */}
+      {/* Sidebar container - 100% solid, no glassmorphism */}
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-30 flex flex-col border-r border-border bg-card/95 backdrop-blur-md transition-all duration-300 ease-in-out",
-          collapsed ? "w-16" : "w-64",
+          "fixed top-0 bottom-0 left-0 z-30 flex flex-col border-r border-border bg-card transition-all duration-300 ease-in-out shadow-xl",
+          collapsed ? "w-18" : "w-72",
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         {/* Brand header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-border">
-          <Link href="/dashboard" className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground font-semibold shadow-sm">
-              <span className="swiss-mono text-sm tracking-tighter">P•AI</span>
+        <div className="flex h-18 items-center justify-between px-5 border-b border-border bg-card">
+          <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-primary to-cyan-500 text-white font-bold text-sm shadow-md">
+              <Zap className="h-5 w-5 fill-white" />
             </div>
             {!collapsed && (
               <div className="flex flex-col min-w-0">
-                <span className="font-semibold tracking-tight text-sm text-foreground truncate">
+                <span className="font-bold tracking-tight text-base text-foreground truncate">
                   Pedago AI
                 </span>
-                <span className="swiss-header-tag text-[0.625rem] truncate text-muted-foreground">
-                  Faculty Intelligence
+                <span className="text-xs font-semibold text-primary truncate">
+                  Decision Copilot
                 </span>
               </div>
             )}
           </Link>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="hidden lg:flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <ChevronRight
@@ -183,21 +185,8 @@ export function Sidebar() {
           </button>
         </div>
 
-        {/* Current Active Workspace Indicator */}
-        {!collapsed && (
-          <div className="px-4 py-2.5 border-b border-border/60 bg-muted/30">
-            <div className="flex items-center justify-between">
-              <span className="swiss-header-tag text-[0.5625rem] text-muted-foreground">ACTIVE WORKSPACE</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
-            <p className="text-xs font-medium text-foreground truncate mt-0.5" title={activeWorkspace.name}>
-              {activeWorkspace.name}
-            </p>
-          </div>
-        )}
-
         {/* Navigation list */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        <div className="flex-1 overflow-y-auto px-3.5 py-4 space-y-1.5 [scrollbar-width:thin]">
           {navSections.map((item) => {
             const Icon = item.icon;
             const hasChildren = item.children && item.children.length > 0;
@@ -210,9 +199,9 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-lg mx-auto transition-colors",
+                    "flex h-11 w-11 items-center justify-center rounded-xl mx-auto transition-all",
                     active
-                      ? "bg-primary text-primary-foreground shadow-sm"
+                      ? "bg-gradient-to-r from-primary to-cyan-500 text-white shadow-md glow-primary"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                   title={item.title}
@@ -223,24 +212,24 @@ export function Sidebar() {
             }
 
             return (
-              <div key={item.title} className="space-y-0.5">
+              <div key={item.title} className="space-y-1">
                 {hasChildren ? (
                   <button
                     onClick={() => toggleSection(item.title)}
                     className={cn(
-                      "flex w-full items-center justify-between px-2.5 py-2 text-xs font-medium rounded-lg transition-colors group",
+                      "flex w-full items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all group cursor-pointer",
                       active
-                        ? "text-primary font-semibold bg-primary/10"
+                        ? "text-primary bg-primary/10 border border-primary/20 font-semibold"
                         : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                     )}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className={cn("h-4 w-4", active ? "text-primary" : "text-muted-foreground")} />
+                    <div className="flex items-center gap-3">
+                      <Icon className={cn("h-4.5 w-4.5", active ? "text-primary" : "text-muted-foreground")} />
                       <span className="tracking-tight">{item.title}</span>
                     </div>
                     <ChevronDown
                       className={cn(
-                        "h-3.5 w-3.5 text-muted-foreground/70 transition-transform duration-200",
+                        "h-4 w-4 text-muted-foreground/70 transition-transform duration-200",
                         !isOpen && "-rotate-90"
                       )}
                     />
@@ -249,20 +238,20 @@ export function Sidebar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2.5 px-2.5 py-2 text-xs font-medium rounded-lg transition-colors",
+                      "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition-all",
                       active
-                        ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                        ? "bg-gradient-to-r from-primary to-cyan-600 text-white font-semibold shadow-sm glow-primary"
                         : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4.5 w-4.5" />
                     <span className="tracking-tight">{item.title}</span>
                   </Link>
                 )}
 
                 {/* Sub-items */}
                 {hasChildren && isOpen && (
-                  <div className="ml-4 pl-2 border-l border-border/80 space-y-0.5 my-0.5">
+                  <div className="ml-5 pl-3 border-l-2 border-primary/30 space-y-1 my-1">
                     {item.children!.map((sub) => {
                       const SubIcon = sub.icon;
                       const subActive = pathname === sub.href;
@@ -271,13 +260,13 @@ export function Sidebar() {
                           key={sub.href}
                           href={sub.href}
                           className={cn(
-                            "flex items-center gap-2 px-2 py-1.5 text-xs rounded-md transition-colors",
+                            "flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg transition-all",
                             subActive
-                              ? "bg-primary/15 text-primary font-medium"
-                              : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                              ? "bg-primary/20 text-primary font-bold shadow-2xs"
+                              : "text-muted-foreground hover:bg-muted/60 hover:text-foreground font-medium"
                           )}
                         >
-                          <SubIcon className="h-3.5 w-3.5 shrink-0" />
+                          <SubIcon className="h-4 w-4 shrink-0" />
                           <span className="truncate">{sub.title}</span>
                         </Link>
                       );
@@ -289,12 +278,15 @@ export function Sidebar() {
           })}
         </div>
 
-        {/* Footer / Principle banner */}
+        {/* Footer Guarantee Card */}
         {!collapsed && (
-          <div className="p-3 m-3 rounded-lg border border-border/60 bg-muted/40 text-[0.6875rem] text-muted-foreground">
-            <p className="font-semibold text-foreground">Evidence-First Guarantee</p>
-            <p className="mt-0.5 text-[0.625rem] leading-relaxed">
-              AI recommendations must cite verified course or literature evidence and require faculty sign-off.
+          <div className="p-4 m-3.5 rounded-xl border border-primary/25 bg-card text-xs shadow-xs">
+            <div className="flex items-center gap-2 font-bold text-foreground text-sm">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span>Evidence Guarantee</span>
+            </div>
+            <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
+              Every recommendation cites primary empirical telemetry. Faculty judgment remains sovereign.
             </p>
           </div>
         )}

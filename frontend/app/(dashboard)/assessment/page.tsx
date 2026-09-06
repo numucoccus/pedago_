@@ -31,16 +31,16 @@ export default function AssessmentHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <GitFork className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Post-Exam Misconception Diagnostics
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Analyze itemized exam mark distributions to identify systemic student failure modes. Correlates errors with syllabus topics and outlines ready-to-deliver remedial lessons.
             </p>
           </div>
           <Link
             href="/assessment/misconception-diagnostics"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Analyze Exam Misconceptions</span>
             <ArrowRight className="h-4 w-4" />
@@ -49,23 +49,23 @@ export default function AssessmentHubPage() {
       </div>
 
       {/* Recent Exams */}
-      <div className="rounded-xl border border-border bg-card p-6 space-y-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+      <div className="rounded-xl border border-border bg-card p-6 space-y-4 shadow-xs">
+        <h3 className="text-base font-bold text-foreground">
           Recent Exam Misconception Audits
         </h3>
 
         <div className="divide-y divide-border/60">
           {analyses.map((ana) => (
-            <div key={ana.id} className="py-3 flex items-center justify-between gap-4">
+            <div key={ana.id} className="py-3.5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold text-foreground">{ana.title}</p>
-                <p className="text-[0.6875rem] text-muted-foreground mt-0.5">
+                <p className="text-sm font-semibold text-foreground">{ana.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Analyzed on {formatDate(ana.createdAt)}
                 </p>
               </div>
               <Link
                 href={`/analyses/${ana.id}`}
-                className="text-xs text-primary font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-primary font-medium hover:underline flex items-center gap-1"
               >
                 Inspect Diagnostic Heatmap →
               </Link>

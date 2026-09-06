@@ -67,7 +67,11 @@ export function ExportMenu({
 
       {open && (
         <div
-          className="absolute right-0 mt-1.5 w-52 rounded-xl border border-border bg-popover p-1 shadow-lg z-50 animate-in fade-in zoom-in-95 duration-100"
+          className="absolute right-0 mt-1.5 w-52 rounded-xl border border-border p-1 shadow-lg z-50 animate-in fade-in zoom-in-95 duration-100"
+          style={{
+            backgroundColor: "hsl(var(--card))",
+            color: "hsl(var(--card-foreground))",
+          }}
           onMouseLeave={() => setOpen(false)}
         >
           <button

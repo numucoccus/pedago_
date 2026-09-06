@@ -17,24 +17,26 @@ export function PageHeader({
   badge,
 }: PageHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 mb-6 border-b border-border/80">
-      <div className="space-y-1">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 pb-8 mb-8 border-b border-border/80">
+      <div className="space-y-2">
         {sectionNumber && (
-          <div className="flex items-center gap-2">
-            <span className="swiss-header-tag text-primary">{sectionNumber}</span>
+          <div className="flex items-center gap-2.5">
+            <span className="swiss-header-tag text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-indigo-400 font-bold">
+              {sectionNumber}
+            </span>
             {badge}
           </div>
         )}
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
           {title}
         </h1>
-        <p className="text-sm text-muted-foreground max-w-3xl leading-relaxed">
+        <p className="text-sm sm:text-base text-muted-foreground max-w-3xl leading-relaxed">
           {description}
         </p>
       </div>
 
       {children && (
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-3 shrink-0 pt-2 md:pt-0">
           {children}
         </div>
       )}

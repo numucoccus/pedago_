@@ -51,19 +51,19 @@ export default function CurriculumAlignmentPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         sectionNumber="05.1 // CURRICULUM ALIGNMENT"
         title="Syllabus-to-Industry Alignment Audit"
         description="Benchmark course learning outcomes against thousands of real-world job market requirements. Identifies obsolete topics, emerging skills, and provides turnkey lab modules."
       >
         {step === "results" && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setStep("input")}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-xs font-medium text-foreground hover:bg-muted"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-background hover:bg-muted text-sm font-medium text-foreground transition-all cursor-pointer"
             >
-              <RotateCcw className="h-3.5 w-3.5" />
+              <RotateCcw className="h-4 w-4 text-primary" />
               <span>Audit Another Syllabus</span>
             </button>
             <ExportMenu title="Curriculum Industry Alignment Audit" data={data} />
@@ -73,40 +73,46 @@ export default function CurriculumAlignmentPage() {
 
       {/* INPUT FORM */}
       {step === "input" && (
-        <div className="rounded-xl border border-border bg-card p-6 space-y-5 shadow-xs max-w-4xl">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-            Configure Syllabus & Target Industry
-          </h3>
+        <div className="futuristic-card p-7 sm:p-8 space-y-6 max-w-4xl">
+          <div className="space-y-1">
+            <span className="swiss-header-tag text-primary">AUDIT CONFIGURATION</span>
+            <h3 className="text-lg font-bold text-foreground">
+              Configure Syllabus & Target Industry
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Provide course parameters to calibrate the live vacancy web indexing corpus.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground">Course Title</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-foreground">Course Title</label>
               <input
                 defaultValue="CSE 4201: Cloud Computing Architecture"
-                className="w-full text-xs rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground">Target Industry Sector / Role</label>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-foreground">Target Industry Sector / Role</label>
               <input
                 defaultValue="Cloud-Native Infrastructure & Site Reliability Engineering"
-                className="w-full text-xs rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>
 
-          <div className="pt-2">
-            <label className="text-xs font-semibold text-foreground mb-2 block">
+          <div className="space-y-2 pt-2">
+            <label className="text-sm font-semibold text-foreground block">
               Upload Official Syllabus (PDF, DOCX)
             </label>
             <DocumentDropzone helperText="Upload syllabus detailing week-by-week lecture modules and lab assignments." />
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-4 border-t border-border/60">
             <button
               onClick={handleLaunchAudit}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary via-indigo-600 to-cyan-500 text-white text-sm font-bold hover:brightness-110 transition-all shadow-md cursor-pointer"
             >
               <Workflow className="h-4 w-4" />
               <span>Run Alignment Audit</span>
@@ -117,7 +123,7 @@ export default function CurriculumAlignmentPage() {
 
       {/* PROCESSING STATE */}
       {step === "processing" && (
-        <div className="max-w-3xl mx-auto py-8">
+        <div className="max-w-3xl mx-auto py-12">
           <ProcessingTimeline
             status="analyzing"
             currentStepMessage="Cross-referencing 24 syllabus outcomes against 3,840 verified cloud infrastructure job postings..."
@@ -128,102 +134,108 @@ export default function CurriculumAlignmentPage() {
 
       {/* RESULTS VIEW */}
       {step === "results" && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Executive Alignment Score Card */}
-          <div className="rounded-xl border border-border bg-card p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-xs">
-            <div className="space-y-1">
+          <div className="futuristic-card p-7 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="space-y-2">
               <span className="swiss-header-tag text-primary">SECTOR AUDIT</span>
-              <h3 className="text-base font-bold text-foreground">{data.courseTitle}</h3>
-              <p className="text-xs text-muted-foreground">{data.targetIndustrySector}</p>
-              <div className="flex items-center gap-1.5 text-[0.6875rem] text-muted-foreground pt-1" title={data.methodologyDescription}>
-                <Info className="h-3.5 w-3.5 text-primary" />
-                <span>Evidence retrieval: {data.retrievalDate} (Hover for methodology)</span>
+              <h3 className="text-xl font-bold text-foreground">{data.courseTitle}</h3>
+              <p className="text-sm text-muted-foreground">{data.targetIndustrySector}</p>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1" title={data.methodologyDescription}>
+                <Info className="h-4 w-4 text-primary shrink-0" />
+                <span>Evidence retrieval: {data.retrievalDate} • Cross-referenced against 3,840 vacancies</span>
               </div>
             </div>
 
             <div className="text-right shrink-0">
               <div className="flex items-baseline justify-end gap-1">
-                <span className="font-mono text-4xl font-bold text-primary">
+                <span className="font-mono text-4xl sm:text-5xl font-bold text-primary">
                   {data.alignmentScorePercent}%
                 </span>
               </div>
-              <p className="text-[0.625rem] uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
                 Composite Industry Match Index
               </p>
             </div>
           </div>
 
           {/* Radar Chart: Syllabus Depth vs Industry Need */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            <div className="lg:col-span-6 rounded-xl border border-border bg-card p-6 space-y-4 shadow-xs">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-6 futuristic-card p-7 sm:p-8 space-y-6">
               <div>
                 <span className="swiss-header-tag text-primary">COMPETENCY OVERLAY</span>
-                <h3 className="text-base font-bold text-foreground mt-0.5">
+                <h3 className="text-lg font-bold text-foreground mt-0.5">
                   Syllabus Coverage vs. Industry Demand
                 </h3>
               </div>
 
-              <div className="h-64 w-full">
+              <div className="h-72 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={radarData}>
-                    <PolarGrid stroke="hsl(var(--border))" />
-                    <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 10, fill: "currentColor" }} />
-                    <PolarRadiusAxis domain={[0, 100]} stroke="#888888" fontSize={9} />
+                  <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
+                    <PolarGrid stroke="hsl(var(--border))" strokeDasharray="3 3" />
+                    <PolarAngleAxis
+                      dataKey="dimension"
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                    />
+                    <PolarRadiusAxis
+                      angle={30}
+                      domain={[0, 100]}
+                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                    />
                     <Radar
                       name="Syllabus Depth"
                       dataKey="Syllabus Depth"
-                      stroke="#3b82f6"
-                      fill="#3b82f6"
-                      fillOpacity={0.25}
+                      stroke="#8b5cf6"
+                      fill="#8b5cf6"
+                      fillOpacity={0.4}
                     />
                     <Radar
                       name="Industry Demand"
                       dataKey="Industry Demand"
-                      stroke="#10b981"
-                      fill="#10b981"
-                      fillOpacity={0.25}
+                      stroke="#06b6d4"
+                      fill="#06b6d4"
+                      fillOpacity={0.4}
                     />
-                    <Legend wrapperStyle={{ fontSize: "0.75rem", paddingTop: "0.5rem" }} />
+                    <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Current vs Legacy vs Missing Skills Matrix */}
-            <div className="lg:col-span-6 rounded-xl border border-border bg-card p-6 space-y-4 shadow-xs flex flex-col justify-between">
+            {/* Current vs Missing Skills Matrix */}
+            <div className="lg:col-span-6 futuristic-card p-7 sm:p-8 space-y-6">
               <div>
                 <span className="swiss-header-tag text-primary">SKILLS TAXONOMY</span>
-                <h3 className="text-base font-bold text-foreground mt-0.5">
+                <h3 className="text-lg font-bold text-foreground mt-0.5">
                   Technology Stack Classification
                 </h3>
               </div>
 
-              <div className="space-y-2.5 overflow-y-auto max-h-64 pr-1">
+              <div className="space-y-3 overflow-y-auto max-h-72 pr-1">
                 {data.skillsMatrix.map((item) => {
                   const isCurrent = item.status === "current";
                   const isMissing = item.status === "missing";
-                  const isLegacy = item.status === "legacy";
 
                   return (
                     <div
                       key={item.skillName}
-                      className="p-3 rounded-lg border border-border/80 bg-background/60 flex items-center justify-between text-xs"
+                      className="p-4 rounded-xl border border-border bg-background flex items-center justify-between text-sm"
                     >
-                      <div>
-                        <p className="font-bold text-foreground">{item.skillName}</p>
-                        <p className="text-[0.625rem] text-muted-foreground font-mono">
-                          Demand: {item.industryDemandIndex}/100 • Evidenced in {item.evidenceJobCount} job postings
+                      <div className="space-y-0.5 min-w-0 pr-2">
+                        <p className="text-sm font-bold text-foreground truncate">{item.skillName}</p>
+                        <p className="text-xs text-muted-foreground font-mono">
+                          Demand: {item.industryDemandIndex}/100 • Evidenced in {item.evidenceJobCount} postings
                         </p>
                       </div>
 
                       <span
                         className={cn(
-                          "text-[0.625rem] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0",
+                          "text-xs font-semibold px-2.5 py-1 rounded-md uppercase tracking-wider shrink-0",
                           isCurrent
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                            ? "bg-emerald-500/15 text-emerald-500 dark:text-emerald-400 border border-emerald-500/30"
                             : isMissing
-                            ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20"
-                            : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                            ? "bg-rose-500/15 text-rose-500 dark:text-rose-400 border border-rose-500/30"
+                            : "bg-amber-500/15 text-amber-500 dark:text-amber-400 border border-amber-500/30"
                         )}
                       >
                         {item.status}
@@ -236,37 +248,39 @@ export default function CurriculumAlignmentPage() {
           </div>
 
           {/* Prioritized Micro-Updates */}
-          <div className="rounded-xl border border-border bg-card p-6 space-y-4 shadow-xs">
-            <span className="swiss-header-tag text-primary">CURRICULUM ACTION ITEMS</span>
-            <h3 className="text-base font-bold text-foreground">
-              Prioritized Micro-Updates for Next Semester Syllabus
-            </h3>
+          <div className="futuristic-card p-7 sm:p-8 space-y-6">
+            <div>
+              <span className="swiss-header-tag text-primary">CURRICULUM ACTION ITEMS</span>
+              <h3 className="text-lg font-bold text-foreground mt-0.5">
+                Prioritized Micro-Updates for Next Semester Syllabus
+              </h3>
+            </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {data.prioritizedMicroUpdates.map((update, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-xl border border-border/80 bg-background/60 space-y-1.5 text-xs"
+                  className="p-5 rounded-xl border border-border bg-background space-y-2.5 text-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[0.6875rem] font-bold text-primary">
+                    <span className="font-mono text-xs font-bold text-primary">
                       {update.targetModule}
                     </span>
                     <span
                       className={cn(
-                        "text-[0.625rem] font-bold px-2 py-0.5 rounded uppercase",
+                        "text-xs font-semibold px-2.5 py-1 rounded uppercase tracking-wider",
                         update.priority === "high"
-                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                          : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                          ? "bg-rose-500/15 text-rose-500 dark:text-rose-400 border border-rose-500/30"
+                          : "bg-amber-500/15 text-amber-500 dark:text-amber-400 border border-amber-500/30"
                       )}
                     >
                       {update.priority} Priority
                     </span>
                   </div>
-                  <p className="font-semibold text-foreground text-sm leading-snug">
+                  <p className="font-semibold text-foreground text-base leading-snug">
                     {update.recommendation}
                   </p>
-                  <p className="text-muted-foreground leading-relaxed italic">
+                  <p className="text-sm text-muted-foreground leading-relaxed italic">
                     Rationale: {update.rationale}
                   </p>
                 </div>
@@ -275,37 +289,42 @@ export default function CurriculumAlignmentPage() {
           </div>
 
           {/* Turnkey Plug-and-Play Labs */}
-          <div className="rounded-xl border border-primary/30 bg-primary/5 p-6 space-y-4 shadow-xs">
-            <div className="flex items-center gap-2">
-              <Terminal className="h-5 w-5 text-primary" />
-              <h3 className="text-base font-bold text-foreground">
-                Turnkey Plug-and-Play Laboratory Exercises
-              </h3>
+          <div className="futuristic-card p-7 sm:p-8 border-primary/40 bg-card space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-primary/20 text-primary flex items-center justify-center shrink-0">
+                <Terminal className="h-5 w-5" />
+              </div>
+              <div>
+                <span className="swiss-header-tag text-primary">LABORATORY BLUEPRINTS</span>
+                <h3 className="text-lg font-bold text-foreground">
+                  Turnkey Plug-and-Play Laboratory Exercises
+                </h3>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Directly replaces legacy lab assignments with modern tooling.
+            <p className="text-sm text-muted-foreground">
+              Directly replaces legacy lab assignments with modern cloud tooling.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-1">
               {data.plugAndPlayLabs.map((lab, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-xl border border-primary/20 bg-background/80 space-y-2 text-xs"
+                  className="p-5 rounded-xl border border-primary/25 bg-background space-y-3 text-sm"
                 >
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-foreground">{lab.title}</h4>
-                    <span className="font-mono text-[0.625rem] text-primary bg-primary/10 px-2 py-0.5 rounded">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className="font-bold text-foreground text-base">{lab.title}</h4>
+                    <span className="font-mono text-xs font-semibold text-primary bg-primary/15 border border-primary/30 px-2.5 py-1 rounded-md shrink-0">
                       {lab.estimatedHours} Hours
                     </span>
                   </div>
 
-                  <p className="text-muted-foreground leading-relaxed">{lab.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{lab.description}</p>
 
-                  <div className="flex flex-wrap gap-1 pt-1">
+                  <div className="flex flex-wrap gap-1.5 pt-1">
                     {lab.modernTools.map((t) => (
                       <span
                         key={t}
-                        className="text-[0.625rem] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground"
+                        className="text-xs font-mono px-2.5 py-1 rounded bg-muted/60 text-muted-foreground border border-border/50"
                       >
                         {t}
                       </span>
@@ -317,13 +336,15 @@ export default function CurriculumAlignmentPage() {
           </div>
 
           {/* Findings */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+          <div className="space-y-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
               Curricular Findings ({data.findings.length})
             </h3>
-            {data.findings.map((f) => (
-              <FindingCard key={f.id} finding={f} />
-            ))}
+            <div className="space-y-4">
+              {data.findings.map((f) => (
+                <FindingCard key={f.id} finding={f} />
+              ))}
+            </div>
           </div>
 
           <LimitationNotice limitations={data.limitations} />

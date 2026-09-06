@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface Particle {
   x: number;
@@ -12,9 +13,19 @@ interface Particle {
   baseAlpha: number;
 }
 
-export function AmbientBackground() {
+interface AmbientBackgroundProps {
+  className?: string;
+  intensity?: "atmospheric" | "dashboard";
+}
+
+export function AmbientBackground({
+  className,
+  intensity = "atmospheric",
+}: AmbientBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
+
+  const isDashboard = intensity === "dashboard";
 
   useEffect(() => {
     // Check prefers-reduced-motion
@@ -32,19 +43,24 @@ export function AmbientBackground() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Dynamic particle count based on viewport
-    const particleCount = isTouchDevice ? 20 : Math.min(65, Math.floor((width * height) / 25000));
+    // Particle count: slightly less dense in dashboard to keep pure clarity
+    const baseCount = isDashboard ? 25 : 55;
+    const particleCount = isTouchDevice ? 15 : Math.min(baseCount, Math.floor((width * height) / 28000));
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
+      const alphaVal = isDashboard
+        ? Math.random() * 0.2 + 0.08
+        : Math.random() * 0.35 + 0.15;
+
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-        radius: Math.random() * 2.2 + 0.8,
-        baseAlpha: Math.random() * 0.35 + 0.15,
-        alpha: Math.random() * 0.35 + 0.15,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 2.4 + 0.8,
+        baseAlpha: alphaVal,
+        alpha: alphaVal,
       });
     }
 
@@ -92,8 +108,8 @@ export function AmbientBackground() {
 
         // Mouse trail
         if (mouse.x > 0 && mouse.y > 0) {
-          mouse.trail.push({ x: mouse.x, y: mouse.y, alpha: 0.22 });
-          if (mouse.trail.length > 12) {
+          mouse.trail.push({ x: mouse.x, y: mouse.y, alpha: isDashboard ? 0.12 : 0.22 });
+          if (mouse.trail.length > (isDashboard ? 8 : 14)) {
             mouse.trail.shift();
           }
         }
@@ -104,7 +120,7 @@ export function AmbientBackground() {
           pt.alpha *= 0.88;
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, (i + 1) * 0.9, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(99, 102, 241, ${pt.alpha * 0.4})`;
+          ctx.fillStyle = `rgba(99, 102, 241, ${pt.alpha * 0.35})`;
           ctx.fill();
         }
       }
@@ -154,31 +170,51 @@ export function AmbientBackground() {
         window.removeEventListener("mousemove", handleMouseMove);
       }
     };
-  }, []);
+  }, [isDashboard]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div
+      className={cn(
+        "pointer-events-none fixed inset-0 z-0 overflow-hidden",
+        className
+      )}
+      aria-hidden="true"
+    >
       {/* Slow aurora gradient mesh */}
       <div
-        className="absolute -top-[30%] -left-[10%] h-[70vw] w-[70vw] rounded-full opacity-35 blur-[120px] dark:opacity-25 transition-transform duration-1000 animate-pulse"
+        className={cn(
+          "absolute -top-[30%] -left-[10%] h-[75vw] w-[75vw] rounded-full blur-[130px] transition-transform duration-1000",
+          isDashboard
+            ? "opacity-25 dark:opacity-20"
+            : "opacity-45 dark:opacity-30 animate-pulse"
+        )}
         style={{
-          background: "radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(56, 189, 248, 0.15) 70%, transparent 100%)",
+          background:
+            "radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(6, 182, 212, 0.25) 50%, transparent 80%)",
           animationDuration: "14s",
         }}
       />
       <div
-        className="absolute top-[35%] -right-[15%] h-[65vw] w-[65vw] rounded-full opacity-30 blur-[130px] dark:opacity-20 transition-transform duration-1000"
+        className={cn(
+          "absolute top-[35%] -right-[15%] h-[70vw] w-[70vw] rounded-full blur-[140px] transition-transform duration-1000",
+          isDashboard ? "opacity-20 dark:opacity-15" : "opacity-40 dark:opacity-25"
+        )}
         style={{
-          background: "radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(99, 102, 241, 0.15) 70%, transparent 100%)",
+          background:
+            "radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(59, 130, 246, 0.2) 60%, transparent 80%)",
         }}
       />
 
       {/* Subtle cursor follower glow */}
       <div
         ref={glowRef}
-        className="hidden md:block absolute top-0 left-0 h-[500px] w-[500px] rounded-full pointer-events-none opacity-20 dark:opacity-15 blur-[90px] transition-transform duration-75 will-change-transform"
+        className={cn(
+          "hidden md:block absolute top-0 left-0 h-[550px] w-[550px] rounded-full pointer-events-none blur-[100px] transition-transform duration-75 will-change-transform",
+          isDashboard ? "opacity-15 dark:opacity-10" : "opacity-25 dark:opacity-20"
+        )}
         style={{
-          background: "radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, rgba(14, 165, 233, 0.2) 60%, transparent 100%)",
+          background:
+            "radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, rgba(6, 182, 212, 0.25) 60%, transparent 100%)",
         }}
       />
 

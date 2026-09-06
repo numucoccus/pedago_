@@ -40,13 +40,13 @@ export function ConfidenceBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[0.6875rem] font-semibold border tracking-tight",
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border tracking-tight",
         config.colorClass,
         className
       )}
       title={config.tooltip}
     >
-      {showIcon && <Icon className="h-3 w-3 shrink-0" />}
+      {showIcon && <Icon className="h-3.5 w-3.5 shrink-0" />}
       <span>{config.label}</span>
     </span>
   );

@@ -55,39 +55,39 @@ export default function SignupPage() {
     <div className="relative min-h-screen flex items-center justify-center p-6 bg-background">
       <AmbientBackground />
 
-      <div className="relative z-10 w-full max-w-lg rounded-2xl border border-border bg-card/90 backdrop-blur-xl p-8 shadow-2xl space-y-6">
+      <div className="relative z-10 w-full max-w-lg futuristic-card p-8 sm:p-10 shadow-2xl space-y-7 border-primary/30">
         <div className="space-y-2 text-center">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs mx-auto mb-1">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-base shadow-xs mx-auto mb-1">
             P•AI
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Create Faculty Account
           </h1>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Register your department to provision isolated academic workspaces.
           </p>
         </div>
 
-        <form onSubmit={handleSignup} className="space-y-4 text-xs">
+        <form onSubmit={handleSignup} className="space-y-5 text-sm">
           {errorMessage && (
-            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">
+            <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/25 text-destructive text-sm font-medium">
               {errorMessage}
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
               <label className="font-semibold text-foreground">Full Name</label>
               <input
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Dr. Elena Rostova"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <label className="font-semibold text-foreground">Institutional Email</label>
               <input
                 type="email"
@@ -95,36 +95,36 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="faculty@polytechnic.edu"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
               <label className="font-semibold text-foreground">Institution / University</label>
               <input
                 required
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
                 placeholder="ETH Zurich / MIT"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <label className="font-semibold text-foreground">Department</label>
               <input
                 required
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
                 placeholder="Computer Science & AI"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <label className="font-semibold text-foreground">Master Password</label>
             <input
               type="password"
@@ -132,20 +132,20 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Minimum 8 characters"
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full text-sm rounded-xl border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs mt-2"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-primary via-indigo-600 to-cyan-500 text-white text-sm font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md mt-2"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <span>Register Faculty Account</span>}
           </button>
         </form>
 
-        <div className="text-center text-xs text-muted-foreground pt-1">
+        <div className="text-center text-sm text-muted-foreground pt-1">
           Already have an account?{" "}
           <Link href="/login" className="text-primary font-semibold hover:underline">
             Sign In
