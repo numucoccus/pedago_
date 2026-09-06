@@ -1,4 +1,14 @@
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import { z } from "zod";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from backend folder or workspace root if present
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
 const booleanFromEnv = z
   .union([z.boolean(), z.enum(["true", "false", "1", "0"])])
@@ -11,7 +21,7 @@ export const envSchema = z.object({
   API_BASE_PATH: z.string().default("/api/v1"),
   CORS_ORIGINS: z
     .string()
-    .default("http://localhost:3000")
+    .default("http://localhost:3000,http://localhost:3001")
     .transform((value) =>
       value
         .split(",")
@@ -19,11 +29,13 @@ export const envSchema = z.object({
         .filter(Boolean),
     ),
 
-  SUPABASE_URL: z.url(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(20),
+  SUPABASE_URL: z.string().url("SUPABASE_URL must be a valid URL"),
+  SUPABASE_ANON_KEY: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, "SUPABASE_SERVICE_ROLE_KEY is required"),
   SUPABASE_JWT_SECRET: z.string().min(16).optional(),
-  SUPABASE_JWKS_URL: z.url().optional(),
+  SUPABASE_JWKS_URL: z.string().url().optional(),
   SUPABASE_JWT_ISSUER: z.string().optional(),
+  DATABASE_URL: z.string().optional(),
 
   DATA_STORE: z.enum(["supabase", "memory"]).default("supabase"),
   JOB_DISPATCHER: z.enum(["inngest", "inline"]).default("inline"),
@@ -32,7 +44,7 @@ export const envSchema = z.object({
   INNGEST_APP_ID: z.string().default("pedago-backend"),
 
   AI_PROVIDER: z.enum(["openai_compatible", "fake"]).default("fake"),
-  AI_BASE_URL: z.url().default("https://api.openai.com/v1"),
+  AI_BASE_URL: z.string().url().default("https://api.openai.com/v1"),
   AI_API_KEY: z.string().optional(),
   AI_MODEL: z.string().default("gpt-4o-mini"),
   AI_VISION_MODEL: z.string().optional(),
@@ -53,10 +65,10 @@ export const envSchema = z.object({
         .map((source) => source.trim())
         .filter(Boolean),
     ),
-  OPENALEX_MAILTO: z.email().optional(),
+  OPENALEX_MAILTO: z.string().email().optional(),
   SEMANTIC_SCHOLAR_API_KEY: z.string().optional(),
-  CROSSREF_MAILTO: z.email().optional(),
-  UNPAYWALL_EMAIL: z.email().optional(),
+  CROSSREF_MAILTO: z.string().email().optional(),
+  UNPAYWALL_EMAIL: z.string().email().optional(),
   RESEARCH_TIMEOUT_MS: z.coerce.number().int().min(1000).max(120_000).default(20_000),
 
   MAX_UPLOAD_BYTES: z.coerce.number().int().min(1024).default(50 * 1024 * 1024),
@@ -68,10 +80,10 @@ export const envSchema = z.object({
   RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(300),
   EXPENSIVE_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(30),
 
-  SENTRY_DSN: z.url().optional(),
+  SENTRY_DSN: z.string().url().optional(),
   LANGFUSE_PUBLIC_KEY: z.string().optional(),
   LANGFUSE_SECRET_KEY: z.string().optional(),
-  LANGFUSE_BASE_URL: z.url().optional(),
+  LANGFUSE_BASE_URL: z.string().url().optional(),
   TRUST_PROXY: booleanFromEnv.default(false),
 });
 
@@ -114,4 +126,13 @@ export function testEnv(overrides: Partial<Record<keyof Env, string>> = {}): Env
     AI_EMBEDDING_DIMENSION: "64",
     ...overrides,
   });
+}
+
+// Fallback exported instance
+let defaultEnvInstance: Env | undefined;
+export function getEnv(): Env {
+  if (!defaultEnvInstance) {
+    defaultEnvInstance = loadEnv();
+  }
+  return defaultEnvInstance;
 }

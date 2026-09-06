@@ -1,15 +1,13 @@
 /**
  * Database contract for Pedago AI.
  *
- * This file mirrors the schema defined in prompts/DATABASE_BUILD_PROMPT.md. Replace it with the
- * Supabase CLI output (`supabase gen types typescript`) once migrations are applied; the backend
- * repositories only depend on the column names and types declared here.
- *
- * Embedding dimension: 1536 (text-embedding-3-small compatible). Do not mix dimensions.
+ * This file mirrors the schema defined in supabase/migrations/ and prompts/DATABASE_BUILD_PROMPT.md.
+ * Embedding dimension: 1536 (text-embedding-3-small compatible).
  */
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export type UserRole = "system_admin" | "faculty" | "student" | "reviewer";
 export type WorkspaceRole = "owner" | "admin" | "faculty" | "reviewer";
 export type ModuleKey = "research" | "teaching" | "assessment" | "student" | "curriculum";
 export type AnalysisType =
@@ -33,6 +31,7 @@ export type AnalysisStatus =
   | "failed"
   | "cancelled";
 export type DocumentStatus = "pending_upload" | "uploaded" | "extracting" | "ready" | "failed" | "deleted";
+export type DocumentProcessingStatus = "pending" | "extracting" | "indexed" | "failed" | "ready";
 export type DocumentKind =
   | "syllabus"
   | "lecture_slide"
@@ -53,12 +52,14 @@ export type DocumentKind =
   | "other";
 export type EvidenceSourceType = "document_chunk" | "research_work" | "external_dataset" | "calculated_metric";
 export type ConfidenceLevel = "low" | "medium" | "high";
+export type FindingConfidence = ConfidenceLevel;
 export type VerificationStatus =
   | "extracted"
   | "student_submitted"
   | "issuer_verified"
   | "faculty_verified"
   | "unverified";
+export type VerdictType = "supported" | "partially_supported" | "not_supported" | "insufficient_evidence";
 export type ArtifactType =
   | "action_plan"
   | "warmup_quiz"
@@ -89,6 +90,7 @@ export interface TenantColumns {
 type DefaultKeys = "id" | "created_at" | "updated_at";
 type Insertable<Row, Optional extends keyof Row = never> = Omit<Row, DefaultKeys | Optional> &
   Partial<Pick<Row, Extract<DefaultKeys | Optional, keyof Row>>>;
+type Updatable<Row> = Partial<Row>;
 
 export interface ProfileRow {
   id: string;
@@ -111,12 +113,12 @@ export interface OrganizationRow {
 }
 
 export interface OrganizationMemberRow {
-  id: string;
+  id?: string;
   organization_id: string;
   user_id: string;
   role: WorkspaceRole;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface WorkspaceRow {
@@ -132,12 +134,12 @@ export interface WorkspaceRow {
 }
 
 export interface WorkspaceMemberRow {
-  id: string;
+  id?: string;
   workspace_id: string;
   user_id: string;
   role: WorkspaceRole;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export interface CourseRow extends TenantColumns {
@@ -218,7 +220,6 @@ export interface AnalysisRow extends TenantColumns {
   failure_message_safe: string | null;
   approved_at: string | null;
   approved_by: string | null;
-  /** Handler-specific structured output (backend-owned; see DATABASE prompt addendum). */
   result: Json | null;
   provenance: Json | null;
 }
@@ -612,15 +613,16 @@ export interface IdempotencyKeyRow {
 export interface Database {
   public: {
     Tables: {
-      profiles: { Row: ProfileRow; Insert: Insertable<ProfileRow, never> };
-      organizations: { Row: OrganizationRow; Insert: Insertable<OrganizationRow> };
-      organization_members: { Row: OrganizationMemberRow; Insert: Insertable<OrganizationMemberRow> };
-      workspaces: { Row: WorkspaceRow; Insert: Insertable<WorkspaceRow, "description" | "settings"> };
-      workspace_members: { Row: WorkspaceMemberRow; Insert: Insertable<WorkspaceMemberRow> };
-      courses: { Row: CourseRow; Insert: Insertable<CourseRow, "term" | "academic_year" | "description"> };
+      profiles: { Row: ProfileRow; Insert: Insertable<ProfileRow, never>; Update: Updatable<ProfileRow> };
+      organizations: { Row: OrganizationRow; Insert: Insertable<OrganizationRow>; Update: Updatable<OrganizationRow> };
+      organization_members: { Row: OrganizationMemberRow; Insert: Insertable<OrganizationMemberRow>; Update: Updatable<OrganizationMemberRow> };
+      workspaces: { Row: WorkspaceRow; Insert: Insertable<WorkspaceRow, "description" | "settings">; Update: Updatable<WorkspaceRow> };
+      workspace_members: { Row: WorkspaceMemberRow; Insert: Insertable<WorkspaceMemberRow>; Update: Updatable<WorkspaceMemberRow> };
+      courses: { Row: CourseRow; Insert: Insertable<CourseRow, "term" | "academic_year" | "description">; Update: Updatable<CourseRow> };
       course_topics: {
         Row: CourseTopicRow;
         Insert: Insertable<CourseTopicRow, "parent_topic_id" | "description" | "learning_outcomes">;
+        Update: Updatable<CourseTopicRow>;
       };
       documents: {
         Row: DocumentRow;
@@ -634,12 +636,14 @@ export interface Database {
           | "contains_personal_data"
           | "deleted_at"
         >;
+        Update: Updatable<DocumentRow>;
       };
       document_extractions: {
         Row: DocumentExtractionRow;
         Insert: Insertable<DocumentExtractionRow, "completed_at" | "error_code" | "error_message_safe" | "metadata">;
+        Update: Updatable<DocumentExtractionRow>;
       };
-      document_chunks: { Row: DocumentChunkRow; Insert: Insertable<DocumentChunkRow, "metadata" | "embedding"> };
+      document_chunks: { Row: DocumentChunkRow; Insert: Insertable<DocumentChunkRow, "metadata" | "embedding">; Update: Updatable<DocumentChunkRow> };
       analyses: {
         Row: AnalysisRow;
         Insert: Insertable<
@@ -660,34 +664,38 @@ export interface Database {
           | "result"
           | "provenance"
         >;
+        Update: Updatable<AnalysisRow>;
       };
-      analysis_documents: { Row: AnalysisDocumentRow; Insert: AnalysisDocumentRow };
-      analysis_events: { Row: AnalysisEventRow; Insert: Insertable<AnalysisEventRow, "metadata"> };
-      findings: { Row: FindingRow; Insert: Insertable<FindingRow, "metrics" | "sort_order"> };
+      analysis_documents: { Row: AnalysisDocumentRow; Insert: AnalysisDocumentRow; Update: Updatable<AnalysisDocumentRow> };
+      analysis_events: { Row: AnalysisEventRow; Insert: Insertable<AnalysisEventRow, "metadata">; Update: Updatable<AnalysisEventRow> };
+      findings: { Row: FindingRow; Insert: Insertable<FindingRow, "metrics" | "sort_order">; Update: Updatable<FindingRow> };
       evidence_items: {
         Row: EvidenceItemRow;
         Insert: Insertable<
           EvidenceItemRow,
           "document_chunk_id" | "research_work_id" | "external_source_url" | "published_year" | "metadata"
         >;
+        Update: Updatable<EvidenceItemRow>;
       };
-      finding_evidence: { Row: FindingEvidenceRow; Insert: FindingEvidenceRow };
+      finding_evidence: { Row: FindingEvidenceRow; Insert: FindingEvidenceRow; Update: Updatable<FindingEvidenceRow> };
       artifacts: {
         Row: ArtifactRow;
         Insert: Insertable<ArtifactRow, "version" | "approved_at" | "approved_by" | "exported_at">;
+        Update: Updatable<ArtifactRow>;
       };
-      artifact_versions: { Row: ArtifactVersionRow; Insert: Insertable<ArtifactVersionRow> };
-      research_queries: { Row: ResearchQueryRow; Insert: Insertable<ResearchQueryRow, "error_code" | "filters"> };
+      artifact_versions: { Row: ArtifactVersionRow; Insert: Insertable<ArtifactVersionRow>; Update: Updatable<ArtifactVersionRow> };
+      research_queries: { Row: ResearchQueryRow; Insert: Insertable<ResearchQueryRow, "error_code" | "filters">; Update: Updatable<ResearchQueryRow> };
       research_works: {
         Row: ResearchWorkRow;
         Insert: Insertable<
           ResearchWorkRow,
           "doi" | "abstract" | "publication_year" | "venue" | "citation_count" | "metadata"
         >;
+        Update: Updatable<ResearchWorkRow>;
       };
-      analysis_research_works: { Row: AnalysisResearchWorkRow; Insert: AnalysisResearchWorkRow };
-      research_trend_points: { Row: ResearchTrendPointRow; Insert: Insertable<ResearchTrendPointRow, "metadata"> };
-      research_decision_options: { Row: ResearchDecisionOptionRow; Insert: Insertable<ResearchDecisionOptionRow> };
+      analysis_research_works: { Row: AnalysisResearchWorkRow; Insert: AnalysisResearchWorkRow; Update: Updatable<AnalysisResearchWorkRow> };
+      research_trend_points: { Row: ResearchTrendPointRow; Insert: Insertable<ResearchTrendPointRow, "metadata">; Update: Updatable<ResearchTrendPointRow> };
+      research_decision_options: { Row: ResearchDecisionOptionRow; Insert: Insertable<ResearchDecisionOptionRow>; Update: Updatable<ResearchDecisionOptionRow> };
       feedback_entries: {
         Row: FeedbackEntryRow;
         Insert: Insertable<
@@ -701,6 +709,7 @@ export interface Database {
           | "confusion_score"
           | "is_anonymized"
         >;
+        Update: Updatable<FeedbackEntryRow>;
       };
       query_messages: {
         Row: QueryMessageRow;
@@ -708,21 +717,25 @@ export interface Database {
           QueryMessageRow,
           "course_id" | "document_id" | "analysis_id" | "external_message_id" | "occurred_at" | "embedding"
         >;
+        Update: Updatable<QueryMessageRow>;
       };
       query_clusters: {
         Row: QueryClusterRow;
         Insert: Insertable<QueryClusterRow, "course_topic_id" | "centroid">;
+        Update: Updatable<QueryClusterRow>;
       };
-      query_cluster_members: { Row: QueryClusterMemberRow; Insert: QueryClusterMemberRow };
-      exams: { Row: ExamRow; Insert: Insertable<ExamRow, "course_id" | "analysis_id" | "exam_date" | "total_marks"> };
-      exam_questions: { Row: ExamQuestionRow; Insert: Insertable<ExamQuestionRow, "course_topic_id" | "rubric"> };
+      query_cluster_members: { Row: QueryClusterMemberRow; Insert: QueryClusterMemberRow; Update: Updatable<QueryClusterMemberRow> };
+      exams: { Row: ExamRow; Insert: Insertable<ExamRow, "course_id" | "analysis_id" | "exam_date" | "total_marks">; Update: Updatable<ExamRow> };
+      exam_questions: { Row: ExamQuestionRow; Insert: Insertable<ExamQuestionRow, "course_topic_id" | "rubric">; Update: Updatable<ExamQuestionRow> };
       student_responses: {
         Row: StudentResponseRow;
         Insert: Insertable<StudentResponseRow, "student_id" | "anonymous_subject_key" | "response_text" | "feedback">;
+        Update: Updatable<StudentResponseRow>;
       };
       misconception_clusters: {
         Row: MisconceptionClusterRow;
         Insert: Insertable<MisconceptionClusterRow, "root_cause_hypothesis" | "course_topic_id">;
+        Update: Updatable<MisconceptionClusterRow>;
       };
       students: {
         Row: StudentRow;
@@ -730,6 +743,7 @@ export interface Database {
           StudentRow,
           "email" | "program" | "cohort" | "cgpa" | "consent_status" | "retention_until" | "deleted_at"
         >;
+        Update: Updatable<StudentRow>;
       };
       achievements: {
         Row: AchievementRow;
@@ -745,24 +759,29 @@ export interface Database {
           | "verified_by"
           | "extracted_fields"
         >;
+        Update: Updatable<AchievementRow>;
       };
       student_activity_metrics: {
         Row: StudentActivityMetricRow;
         Insert: Insertable<StudentActivityMetricRow, "source_document_id">;
+        Update: Updatable<StudentActivityMetricRow>;
       };
-      scoring_models: { Row: ScoringModelRow; Insert: Insertable<ScoringModelRow, "is_active"> };
-      student_scores: { Row: StudentScoreRow; Insert: Insertable<StudentScoreRow, "scoring_model_id"> };
+      scoring_models: { Row: ScoringModelRow; Insert: Insertable<ScoringModelRow, "is_active">; Update: Updatable<ScoringModelRow> };
+      student_scores: { Row: StudentScoreRow; Insert: Insertable<StudentScoreRow, "scoring_model_id">; Update: Updatable<StudentScoreRow> };
       student_risk_signals: {
         Row: StudentRiskSignalRow;
         Insert: Insertable<StudentRiskSignalRow, "requires_human_review" | "reviewed_at" | "reviewed_by">;
+        Update: Updatable<StudentRiskSignalRow>;
       };
       target_programs: {
         Row: TargetProgramRow;
         Insert: Insertable<TargetProgramRow, "institution" | "program_type" | "source_url">;
+        Update: Updatable<TargetProgramRow>;
       };
       lor_requests: {
         Row: LorRequestRow;
         Insert: Insertable<LorRequestRow, "target_program_id" | "deadline" | "faculty_notes">;
+        Update: Updatable<LorRequestRow>;
       };
       industry_sources: {
         Row: IndustrySourceRow;
@@ -770,18 +789,22 @@ export interface Database {
           IndustrySourceRow,
           "organization_id" | "workspace_id" | "source_url" | "terms_url" | "retrieved_at" | "metadata"
         >;
+        Update: Updatable<IndustrySourceRow>;
       };
       industry_skill_observations: {
         Row: IndustrySkillObservationRow;
         Insert: Insertable<IndustrySkillObservationRow, "dataset_document_id" | "metadata">;
+        Update: Updatable<IndustrySkillObservationRow>;
       };
       curriculum_skill_mappings: {
         Row: CurriculumSkillMappingRow;
         Insert: Insertable<CurriculumSkillMappingRow, "course_topic_id">;
+        Update: Updatable<CurriculumSkillMappingRow>;
       };
       curriculum_recommendations: {
         Row: CurriculumRecommendationRow;
         Insert: Insertable<CurriculumRecommendationRow, "estimated_hours" | "placement">;
+        Update: Updatable<CurriculumRecommendationRow>;
       };
       audit_events: {
         Row: AuditEventRow;
@@ -789,18 +812,29 @@ export interface Database {
           AuditEventRow,
           "organization_id" | "workspace_id" | "actor_id" | "entity_id" | "request_id" | "metadata"
         >;
+        Update: Updatable<AuditEventRow>;
       };
       consent_records: {
         Row: ConsentRecordRow;
         Insert: Insertable<ConsentRecordRow, "granted_at" | "withdrawn_at" | "metadata">;
+        Update: Updatable<ConsentRecordRow>;
       };
       retention_jobs: {
         Row: RetentionJobRow;
         Insert: Insertable<RetentionJobRow, "completed_at" | "failure_code" | "status">;
+        Update: Updatable<RetentionJobRow>;
       };
-      idempotency_keys: { Row: IdempotencyKeyRow; Insert: Insertable<IdempotencyKeyRow> };
+      idempotency_keys: { Row: IdempotencyKeyRow; Insert: Insertable<IdempotencyKeyRow>; Update: Updatable<IdempotencyKeyRow> };
     };
     Functions: {
+      is_organization_member: {
+        Args: { org_id: string; user_id: string };
+        Returns: boolean;
+      };
+      is_workspace_member: {
+        Args: { ws_id: string; user_id: string };
+        Returns: boolean;
+      };
       match_document_chunks: {
         Args: {
           p_workspace_id: string;
@@ -811,11 +845,23 @@ export interface Database {
         Returns: Array<DocumentChunkRow & { similarity: number }>;
       };
     };
+    Enums: {
+      user_role: UserRole;
+      workspace_role: WorkspaceRole;
+      module_key: ModuleKey;
+      analysis_type: AnalysisType;
+      analysis_status: AnalysisStatus;
+      finding_confidence: FindingConfidence;
+      verification_status: VerificationStatus;
+      document_processing_status: DocumentProcessingStatus;
+      verdict_type: VerdictType;
+    };
   };
 }
 
 export type TableName = keyof Database["public"]["Tables"];
 export type TableRow<T extends TableName> = Database["public"]["Tables"][T]["Row"];
 export type TableInsert<T extends TableName> = Database["public"]["Tables"][T]["Insert"];
+export type TableUpdate<T extends TableName> = Database["public"]["Tables"][T]["Update"];
 
 export const EMBEDDING_DIMENSION = 1536;

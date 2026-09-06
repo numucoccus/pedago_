@@ -26,12 +26,12 @@ async function main(): Promise<void> {
   const server = app.listen(env.PORT, () => {
     logger.info(
       { port: env.PORT, basePath: env.API_BASE_PATH, dataStore: env.DATA_STORE, aiProvider: env.AI_PROVIDER, jobs: env.JOB_DISPATCHER, handlers: container.registry.types().length },
-      "Pedago AI backend listening",
+      "🚀 Pedago AI backend listening",
     );
   });
 
   const shutdown = (signal: string) => {
-    logger.info({ signal }, "Shutting down");
+    logger.info({ signal }, "Shutting down HTTP server");
     server.close(() => process.exit(0));
     setTimeout(() => process.exit(1), 10_000).unref();
   };

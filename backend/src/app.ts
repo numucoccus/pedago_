@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import helmet from "helmet";
 import { pinoHttp } from "pino-http";
 import swaggerUi from "swagger-ui-express";
@@ -48,7 +48,22 @@ export function createApp(container: Container, options: { errorReporter?: Error
       },
     }),
   );
-  app.use(express.json({ limit: "2mb" }));
+  app.use(express.json({ limit: "10mb" }));
+
+  // Root fallback info endpoint
+  app.get("/", (_req: Request, res: Response) => {
+    res.json({
+      name: "Pedago AI Backend API",
+      version: APP_VERSION,
+      documentation: `${env.API_BASE_PATH}/docs`,
+      health: `${env.API_BASE_PATH}/health`,
+    });
+  });
+
+  // Top-level unversioned health endpoint
+  app.get("/health", (req: Request, res: Response) => {
+    container.controllers.system.health(req, res);
+  });
 
   const basePath = env.API_BASE_PATH.replace(/\/$/, "");
   const openapi = buildOpenApiDocument({ basePath, version: APP_VERSION });
