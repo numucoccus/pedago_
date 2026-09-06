@@ -84,9 +84,10 @@ export default function DocumentsPage() {
                 <div className="min-w-0 truncate">
                   <p className="font-bold text-foreground truncate text-base">{doc.title}</p>
                   <p className="text-xs text-muted-foreground font-mono mt-1">
-                    {formatFileSize(doc.fileSize)} • Indexed {formatDate(doc.createdAt)}
+                    {formatFileSize(doc.fileSize ?? doc.sizeBytes ?? 0)} • Indexed {formatDate(doc.createdAt)}
                     {doc.pageCount && ` • ${doc.pageCount} pages`}
                   </p>
+
                 </div>
               </div>
 

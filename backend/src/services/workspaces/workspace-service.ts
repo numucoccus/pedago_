@@ -152,7 +152,7 @@ export class WorkspaceService {
     await this.audit.record(
       { ...audit, organizationId: workspace.organization_id, workspaceId },
       "workspace.member_added",
-      { type: "workspace_member", id: member.id },
+      { type: "workspace_member", id: member.id ?? `${workspaceId}:${input.userId}` },
       { role: input.role, userId: input.userId },
     );
     return toMemberSummary(member);
@@ -193,6 +193,7 @@ export function toWorkspaceSummary(workspace: WorkspaceRow, role: WorkspaceRole)
   };
 }
 
-function toMemberSummary(member: { id: string; workspace_id: string; user_id: string; role: WorkspaceRole; created_at: string }): WorkspaceMemberSummary {
-  return { id: member.id, workspaceId: member.workspace_id, userId: member.user_id, role: member.role, createdAt: member.created_at };
+function toMemberSummary(member: { id?: string; workspace_id: string; user_id: string; role: WorkspaceRole; created_at: string }): WorkspaceMemberSummary {
+  return { id: member.id ?? `${member.workspace_id}:${member.user_id}`, workspaceId: member.workspace_id, userId: member.user_id, role: member.role, createdAt: member.created_at };
 }
+

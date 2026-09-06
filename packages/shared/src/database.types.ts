@@ -1,82 +1,25 @@
-/**
- * Database contract for Pedago AI.
- *
- * This file mirrors the schema defined in supabase/migrations/ and prompts/DATABASE_BUILD_PROMPT.md.
- * Embedding dimension: 1536 (text-embedding-3-small compatible).
- */
+import type {
+  AnalysisStatus,
+  AnalysisType,
+  ArtifactStatus,
+  ArtifactType,
+  ConfidenceLevel,
+  DocumentKind,
+  DocumentStatus,
+  EvidenceSourceType,
+  InsightSourceKind,
+  ModuleKey,
+  VerificationStatus,
+  WorkspaceRole,
+} from "./constants.js";
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type UserRole = "system_admin" | "faculty" | "student" | "reviewer";
-export type WorkspaceRole = "owner" | "admin" | "faculty" | "reviewer";
-export type ModuleKey = "research" | "teaching" | "assessment" | "student" | "curriculum";
-export type AnalysisType =
-  | "research_gap"
-  | "research_evolution"
-  | "research_question"
-  | "research_decision"
-  | "teaching_pulse"
-  | "query_clustering"
-  | "exam_misconception"
-  | "student_portfolio"
-  | "lor_dossier"
-  | "curriculum_alignment";
-export type AnalysisStatus =
-  | "draft"
-  | "queued"
-  | "extracting"
-  | "indexing"
-  | "analyzing"
-  | "completed"
-  | "failed"
-  | "cancelled";
-export type DocumentStatus = "pending_upload" | "uploaded" | "extracting" | "ready" | "failed" | "deleted";
 export type DocumentProcessingStatus = "pending" | "extracting" | "indexed" | "failed" | "ready";
-export type DocumentKind =
-  | "syllabus"
-  | "lecture_slide"
-  | "research_paper"
-  | "teacher_note"
-  | "exit_slip"
-  | "query_export"
-  | "quiz_result"
-  | "question_paper"
-  | "rubric"
-  | "answer_script"
-  | "itemized_marks"
-  | "certificate"
-  | "transcript"
-  | "project_report"
-  | "gradebook"
-  | "job_dataset"
-  | "other";
-export type EvidenceSourceType = "document_chunk" | "research_work" | "external_dataset" | "calculated_metric";
-export type ConfidenceLevel = "low" | "medium" | "high";
 export type FindingConfidence = ConfidenceLevel;
-export type VerificationStatus =
-  | "extracted"
-  | "student_submitted"
-  | "issuer_verified"
-  | "faculty_verified"
-  | "unverified";
 export type VerdictType = "supported" | "partially_supported" | "not_supported" | "insufficient_evidence";
-export type ArtifactType =
-  | "action_plan"
-  | "warmup_quiz"
-  | "broadcast"
-  | "remedial_lesson"
-  | "diagnostic_questions"
-  | "research_report"
-  | "portfolio"
-  | "lor_dossier"
-  | "lor_draft"
-  | "curriculum_pack";
-export type ArtifactStatus = "draft" | "faculty_edited" | "approved" | "exported";
-export type InsightSourceKind =
-  | "direct_student_feedback"
-  | "teacher_observation"
-  | "data_derived_pattern"
-  | "ai_hypothesis";
+
 
 export interface TenantColumns {
   id: string;

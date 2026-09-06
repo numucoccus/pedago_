@@ -30,10 +30,13 @@ export interface DocumentRecord {
   id: string;
   workspaceId: string;
   title: string;
-  fileName: string;
+  fileName?: string;
+  filename?: string;
   filePath?: string;
   mimeType: string;
-  sizeBytes: number;
+  sizeBytes?: number;
+  fileSize?: number;
+  pageCount?: number;
   status: import("./database.types.js").DocumentProcessingStatus | import("./constants.js").DocumentStatus;
   purpose?: string;
   uploadedBy?: string;
@@ -46,13 +49,14 @@ export interface EvidenceReference {
   title: string;
   locator: string;
   excerpt: string;
-  sourceType: import("./constants.js").EvidenceSourceType;
+  sourceType?: import("./constants.js").EvidenceSourceType;
   sourceUrl?: string;
   documentId?: string;
   chunkId?: string;
   publishedYear?: number;
   confidence?: import("./constants.js").ConfidenceLevel;
 }
+
 
 export interface Finding {
   id: string;
@@ -104,11 +108,19 @@ export type GapVerdict =
 export interface ResearchGapInput {
   topic: string;
   claimedGap: string;
+  method?: string;
   methodology?: string;
+  problem?: string;
+  populationContext?: string;
   population?: string;
+  yearFrom?: number;
+  yearTo?: number;
   yearRange?: [number, number];
+  sources?: ("openalex" | "semantic_scholar" | "crossref" | "arxiv")[];
+  maxResultsPerSource?: number;
   documentIds?: string[];
 }
+
 
 export interface PriorWorkItem {
   id: string;

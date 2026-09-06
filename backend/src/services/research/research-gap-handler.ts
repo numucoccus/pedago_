@@ -51,10 +51,11 @@ export class ResearchGapHandler implements AnalysisHandler<ResearchGapInput, Han
       sources: input.sources,
       yearFrom: input.yearFrom ?? context.settings.yearFrom,
       yearTo: input.yearTo ?? context.settings.yearTo,
-      limitPerSource: input.maxResultsPerSource,
+      limitPerSource: input.maxResultsPerSource ?? 25,
       rankAgainst: `${input.topic}. ${input.claimedGap}`,
       maxEvidence: Math.min(context.settings.maxEvidence ?? 15, 25),
     });
+
     const documentEvidence = await collectDocumentEvidence(context, [input.claimedGap, input.topic], { limit: 6, startIndex: research.evidence.length });
     const yearRange = `${input.yearFrom ?? context.settings.yearFrom ?? "any"}–${input.yearTo ?? context.settings.yearTo ?? "present"}`;
     const coverage = {
