@@ -20,14 +20,18 @@ import { cn } from "@/lib/utils";
 import { CommandPalette } from "./command-palette";
 
 export function Topbar() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const { isDemoMode, toggleDemoMode, workspaces, activeWorkspace, setActiveWorkspace, user, runningAnalysesCount } =
     useDemo();
 
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+
+  const toggleTheme = () => {
+    const currentTheme = resolvedTheme || theme;
+    setTheme(currentTheme === "dark" ? "light" : "dark");
+  };
 
   return (
     <>
@@ -46,7 +50,11 @@ export function Topbar() {
 
             {workspaceMenuOpen && (
               <div
-                className="absolute top-full left-0 mt-2 w-80 rounded-2xl border border-border bg-popover p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100"
+                className="absolute top-full left-0 mt-2 w-84 rounded-2xl border border-border p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100"
+                style={{
+                  backgroundColor: "hsl(var(--card))",
+                  color: "hsl(var(--card-foreground))",
+                }}
                 onMouseLeave={() => setWorkspaceMenuOpen(false)}
               >
                 <div className="px-3.5 py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
@@ -122,61 +130,16 @@ export function Topbar() {
             <span className="sm:hidden">{isDemoMode ? "DEMO" : "LIVE"}</span>
           </button>
 
-          {/* Theme switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setThemeMenuOpen(!themeMenuOpen)}
-              className="p-2.5 rounded-xl border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition-all shadow-2xs"
-              title="Toggle Theme"
-            >
-              <Sun className="h-4 w-4 dark:hidden text-amber-500" />
-              <Moon className="hidden h-4 w-4 dark:block text-indigo-400" />
-            </button>
-
-            {themeMenuOpen && (
-              <div
-                className="absolute right-0 mt-2 w-40 rounded-2xl border border-border bg-popover p-1.5 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100"
-                onMouseLeave={() => setThemeMenuOpen(false)}
-              >
-                <button
-                  onClick={() => {
-                    setTheme("light");
-                    setThemeMenuOpen(false);
-                  }}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 px-3 py-2 text-sm rounded-xl hover:bg-muted transition-colors cursor-pointer",
-                    theme === "light" && "text-primary font-bold bg-primary/10"
-                  )}
-                >
-                  <Sun className="h-4 w-4 text-amber-500" /> Light
-                </button>
-                <button
-                  onClick={() => {
-                    setTheme("dark");
-                    setThemeMenuOpen(false);
-                  }}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 px-3 py-2 text-sm rounded-xl hover:bg-muted transition-colors cursor-pointer",
-                    theme === "dark" && "text-primary font-bold bg-primary/10"
-                  )}
-                >
-                  <Moon className="h-4 w-4 text-indigo-400" /> Dark
-                </button>
-                <button
-                  onClick={() => {
-                    setTheme("system");
-                    setThemeMenuOpen(false);
-                  }}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 px-3 py-2 text-sm rounded-xl hover:bg-muted transition-colors cursor-pointer",
-                    theme === "system" && "text-primary font-bold bg-primary/10"
-                  )}
-                >
-                  <Laptop className="h-4 w-4" /> System
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Theme switcher - Direct One-Click Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2.5 rounded-xl border border-border bg-background text-foreground hover:bg-muted hover:border-primary/40 transition-all shadow-2xs cursor-pointer flex items-center justify-center"
+            title={`Switch to ${(resolvedTheme || theme) === "dark" ? "Light" : "Dark"} Mode`}
+            aria-label="Toggle light and dark mode"
+          >
+            <Sun className="h-4.5 w-4.5 hidden dark:block text-amber-400 transition-transform duration-200 hover:rotate-45" />
+            <Moon className="h-4.5 w-4.5 block dark:hidden text-indigo-600 transition-transform duration-200 hover:-rotate-12" />
+          </button>
 
           {/* User profile menu */}
           <div className="relative">
@@ -195,7 +158,11 @@ export function Topbar() {
 
             {profileMenuOpen && (
               <div
-                className="absolute right-0 mt-2 w-72 rounded-2xl border border-border bg-popover p-2.5 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100"
+                className="absolute right-0 mt-2 w-72 rounded-2xl border border-border p-2.5 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100"
+                style={{
+                  backgroundColor: "hsl(var(--card))",
+                  color: "hsl(var(--card-foreground))",
+                }}
                 onMouseLeave={() => setProfileMenuOpen(false)}
               >
                 <div className="px-3 py-2.5 border-b border-border/80">

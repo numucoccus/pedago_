@@ -107,8 +107,9 @@ const navSections: NavItem[] = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { activeWorkspace } = useDemo();
-  const [collapsed, setCollapsed] = useState(false);
+  const { activeWorkspace, sidebarCollapsed, setSidebarCollapsed } = useDemo();
+  const collapsed = sidebarCollapsed;
+  const setCollapsed = setSidebarCollapsed;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     "Research Intelligence": true,
@@ -157,9 +158,9 @@ export function Sidebar() {
         )}
       >
         {/* Brand header */}
-        <div className="flex h-18 items-center justify-between px-5 border-b border-border/80 bg-card">
+        <div className="flex h-18 items-center justify-between px-5 border-b border-border bg-card">
           <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-primary to-cyan-500 text-white font-bold text-sm shadow-md glow-primary">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-primary to-cyan-500 text-white font-bold text-sm shadow-md">
               <Zap className="h-5 w-5 fill-white" />
             </div>
             {!collapsed && (
@@ -184,21 +185,8 @@ export function Sidebar() {
           </button>
         </div>
 
-        {/* Current Active Workspace Indicator */}
-        {!collapsed && (
-          <div className="px-5 py-3.5 border-b border-border bg-muted/40">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-muted-foreground tracking-wider uppercase">ACTIVE WORKSPACE</span>
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse glow-emerald" />
-            </div>
-            <p className="text-sm font-semibold text-foreground truncate mt-1" title={activeWorkspace.name}>
-              {activeWorkspace.name}
-            </p>
-          </div>
-        )}
-
         {/* Navigation list */}
-        <div className="flex-1 overflow-y-auto px-3.5 py-4 space-y-1.5">
+        <div className="flex-1 overflow-y-auto px-3.5 py-4 space-y-1.5 [scrollbar-width:thin]">
           {navSections.map((item) => {
             const Icon = item.icon;
             const hasChildren = item.children && item.children.length > 0;

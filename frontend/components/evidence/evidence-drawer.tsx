@@ -26,6 +26,10 @@ export function EvidenceDrawer({
     >
       <div
         className="h-full w-full max-w-lg border-l border-border bg-card p-6 shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-200"
+        style={{
+          backgroundColor: "hsl(var(--card))",
+          color: "hsl(var(--card-foreground))",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">

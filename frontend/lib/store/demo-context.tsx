@@ -14,6 +14,8 @@ interface DemoContextType {
   user: UserProfile;
   runningAnalysesCount: number;
   setRunningAnalysesCount: React.Dispatch<React.SetStateAction<number>>;
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
@@ -24,6 +26,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [activeWorkspace, setActiveWorkspaceState] = useState<Workspace>(DEMO_WORKSPACES[0]);
   const [user] = useState<UserProfile>(DEMO_USER);
   const [runningAnalysesCount, setRunningAnalysesCount] = useState<number>(0);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("pedago_demo_mode");
@@ -34,6 +37,10 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     if (storedWsId) {
       const found = DEMO_WORKSPACES.find((w) => w.id === storedWsId);
       if (found) setActiveWorkspaceState(found);
+    }
+    const storedSidebar = localStorage.getItem("pedago_sidebar_collapsed");
+    if (storedSidebar !== null) {
+      setSidebarCollapsed(storedSidebar === "true");
     }
   }, []);
 
@@ -51,6 +58,14 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("pedago_active_ws", ws.id);
   };
 
+  const handleSetSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
+    setSidebarCollapsed((prev) => {
+      const nextVal = typeof value === "function" ? value(prev) : value;
+      localStorage.setItem("pedago_sidebar_collapsed", String(nextVal));
+      return nextVal;
+    });
+  };
+
   return (
     <DemoContext.Provider
       value={{
@@ -63,6 +78,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         user,
         runningAnalysesCount,
         setRunningAnalysesCount,
+        sidebarCollapsed,
+        setSidebarCollapsed: handleSetSidebarCollapsed,
       }}
     >
       {children}

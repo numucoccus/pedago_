@@ -16,6 +16,7 @@ import {
   FileText,
   Sliders,
   LineChart,
+  Search,
 } from "lucide-react";
 import { useDemo } from "@/lib/store/demo-context";
 
@@ -48,24 +49,29 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-black/60 animate-in fade-in-0 duration-150 p-4"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-black/70 animate-in fade-in-0 duration-150 p-4"
       onClick={() => setOpen(false)}
     >
       <div
-        className="w-full max-w-xl overflow-hidden rounded-xl border border-border bg-popover shadow-2xl animate-in zoom-in-95 duration-150"
+        className="w-full max-w-xl overflow-hidden rounded-2xl border border-border shadow-2xl animate-in zoom-in-95 duration-150"
+        style={{
+          backgroundColor: "hsl(var(--card))",
+          color: "hsl(var(--card-foreground))",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <Command className="flex flex-col w-full">
-          <div className="flex items-center border-b border-border px-3">
+        <Command className="flex flex-col w-full" style={{ backgroundColor: "hsl(var(--card))" }}>
+          <div className="flex items-center border-b border-border px-4" style={{ backgroundColor: "hsl(var(--card))" }}>
+            <Search className="h-4.5 w-4.5 text-primary shrink-0 mr-3" />
             <Command.Input
               autoFocus
               placeholder="Type a command or jump to workspace..."
-              className="flex h-13 w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground outline-none"
+              className="flex h-13 w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground outline-none font-medium"
             />
           </div>
 
-          <Command.List className="max-h-80 overflow-y-auto p-2">
-            <Command.Empty className="py-6 text-center text-sm text-muted-foreground">
+          <Command.List className="max-h-84 overflow-y-auto p-2.5 [scrollbar-width:thin]" style={{ backgroundColor: "hsl(var(--card))" }}>
+            <Command.Empty className="py-8 text-center text-sm text-muted-foreground">
               No matching modules, documents, or actions found.
             </Command.Empty>
 
@@ -192,7 +198,10 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
             </Command.Group>
           </Command.List>
 
-          <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-xs text-muted-foreground bg-muted/30">
+          <div
+            className="flex items-center justify-between border-t border-border px-4 py-2.5 text-xs text-muted-foreground"
+            style={{ backgroundColor: "hsl(var(--muted))" }}
+          >
             <span>Use ↑↓ to navigate, Enter to select, ESC to exit</span>
             <span className="swiss-mono font-medium">Pedago Command</span>
           </div>
