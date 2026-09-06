@@ -30,16 +30,16 @@ export default function CurriculumHubPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
               <Workflow className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-foreground">
+            <h3 className="text-lg font-bold text-foreground">
               Syllabus-to-Industry Alignment Audit
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Quantify alignment scores against thousands of active job market postings. Classifies skills into Current, Legacy, and Missing, and generates ready-to-adopt labs.
             </p>
           </div>
           <Link
             href="/curriculum/alignment"
-            className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-3 border-t border-border/60"
+            className="inline-flex items-center justify-between text-sm font-semibold text-primary hover:underline pt-3 border-t border-border/60"
           >
             <span>Run Alignment Audit</span>
             <ArrowRight className="h-4 w-4" />
@@ -48,23 +48,23 @@ export default function CurriculumHubPage() {
       </div>
 
       {/* Recent Curriculum Audits */}
-      <div className="rounded-xl border border-border bg-card p-6 space-y-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+      <div className="rounded-xl border border-border bg-card p-6 space-y-4 shadow-xs">
+        <h3 className="text-base font-bold text-foreground">
           Recent Syllabus Audits
         </h3>
 
         <div className="divide-y divide-border/60">
           {analyses.map((ana) => (
-            <div key={ana.id} className="py-3 flex items-center justify-between gap-4">
+            <div key={ana.id} className="py-3.5 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold text-foreground">{ana.title}</p>
-                <p className="text-[0.6875rem] text-muted-foreground mt-0.5">
+                <p className="text-sm font-semibold text-foreground">{ana.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Audited on {formatDate(ana.createdAt)}
                 </p>
               </div>
               <Link
                 href={`/analyses/${ana.id}`}
-                className="text-xs text-primary font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-primary font-medium hover:underline flex items-center gap-1"
               >
                 Inspect Skill Matrix →
               </Link>

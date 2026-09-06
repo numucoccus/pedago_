@@ -22,7 +22,7 @@ export function ErrorState({
   return (
     <div
       className={cn(
-        "rounded-xl border border-rose-500/30 bg-rose-500/5 p-6 sm:p-8 text-center space-y-4",
+        "futuristic-card border-rose-500/40 bg-rose-500/10 p-7 sm:p-8 text-center space-y-5",
         className
       )}
     >
@@ -31,13 +31,13 @@ export function ErrorState({
       </div>
 
       <div className="space-y-1">
-        <h3 className="text-base font-bold text-foreground">{title}</h3>
+        <h3 className="text-lg font-bold text-foreground">{title}</h3>
         {code && (
-          <p className="font-mono text-[0.6875rem] text-rose-600 dark:text-rose-400 font-semibold">
+          <p className="font-mono text-xs text-rose-600 dark:text-rose-400 font-bold">
             ERROR CODE: {code}
           </p>
         )}
-        <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
+        <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
           {message}
         </p>
       </div>
@@ -46,9 +46,9 @@ export function ErrorState({
         {onBack && (
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-border bg-background text-xs font-medium text-foreground hover:bg-muted transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-background text-sm font-medium text-foreground hover:bg-muted transition-colors cursor-pointer"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
+            <ArrowLeft className="h-4 w-4" />
             <span>Go Back</span>
           </button>
         )}
@@ -56,9 +56,9 @@ export function ErrorState({
         {onRetry && (
           <button
             onClick={onRetry}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-xs cursor-pointer"
           >
-            <RefreshCw className="h-3.5 w-3.5" />
+            <RefreshCw className="h-4 w-4" />
             <span>Retry Action</span>
           </button>
         )}

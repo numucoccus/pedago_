@@ -5,7 +5,7 @@ import type { Finding } from "@pedago/shared";
 import { ConfidenceBadge } from "./confidence-badge";
 import { EvidenceDrawer } from "./evidence-drawer";
 import { LimitationNotice } from "./limitation-notice";
-import { FileText, UserCheck, ChevronDown } from "lucide-react";
+import { FileText, UserCheck, ChevronDown, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FindingCardProps {
@@ -21,20 +21,20 @@ export function FindingCard({ finding, className }: FindingCardProps) {
     <>
       <div
         className={cn(
-          "rounded-xl border border-border bg-card p-5 space-y-3.5 shadow-xs transition-all hover:border-border-strong",
+          "futuristic-card p-6 sm:p-7 space-y-4 shadow-sm hover:border-primary/50 transition-all",
           className
         )}
       >
         {/* Header: Title & Confidence Badge */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2.5">
-          <h3 className="text-sm sm:text-base font-semibold text-foreground tracking-tight leading-snug">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <h3 className="text-base sm:text-lg font-bold text-foreground tracking-tight leading-snug">
             {finding.title}
           </h3>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             <ConfidenceBadge confidence={finding.confidence} />
             {finding.requiresHumanReview && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[0.625rem] font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                <UserCheck className="h-3 w-3" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 glow-amber">
+                <UserCheck className="h-3.5 w-3.5" />
                 Review Required
               </span>
             )}
@@ -42,20 +42,20 @@ export function FindingCard({ finding, className }: FindingCardProps) {
         </div>
 
         {/* Summary */}
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
           {finding.summary}
         </p>
 
         {/* Evidence button & Limitations toggle */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-border/60">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-border/80">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline py-1"
+            className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-cyan-400 transition-colors py-1 cursor-pointer"
           >
-            <FileText className="h-3.5 w-3.5" />
+            <FileText className="h-4.5 w-4.5" />
             <span>
               {finding.evidence.length > 0
-                ? `Inspect ${finding.evidence.length} Cited Evidence Source${finding.evidence.length > 1 ? "s" : ""}`
+                ? `Inspect ${finding.evidence.length} Cited Primary Source${finding.evidence.length > 1 ? "s" : ""}`
                 : "Inspect Evidence"}
             </span>
           </button>
@@ -63,11 +63,11 @@ export function FindingCard({ finding, className }: FindingCardProps) {
           {finding.limitations.length > 0 && (
             <button
               onClick={() => setShowLimitations(!showLimitations)}
-              className="inline-flex items-center gap-1 text-[0.6875rem] font-medium text-muted-foreground hover:text-foreground py-1"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground py-1 transition-colors cursor-pointer"
             >
               <span>{showLimitations ? "Hide" : "Show"} Limitations ({finding.limitations.length})</span>
               <ChevronDown
-                className={cn("h-3 w-3 transition-transform duration-150", showLimitations && "rotate-180")}
+                className={cn("h-4 w-4 transition-transform duration-200", showLimitations && "rotate-180")}
               />
             </button>
           )}
@@ -75,7 +75,7 @@ export function FindingCard({ finding, className }: FindingCardProps) {
 
         {/* Collapsible Limitations Notice */}
         {showLimitations && (
-          <LimitationNotice limitations={finding.limitations} className="mt-2" />
+          <LimitationNotice limitations={finding.limitations} className="mt-3" />
         )}
       </div>
 

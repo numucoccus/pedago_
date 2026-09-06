@@ -29,11 +29,11 @@ export function ProcessingTimeline({
   const isCancelled = status === "cancelled";
 
   return (
-    <div className={cn("rounded-xl border border-border bg-card p-6 space-y-6 shadow-xs", className)}>
+    <div className={cn("futuristic-card p-7 sm:p-8 space-y-6", className)}>
       <div className="flex items-center justify-between">
         <div>
           <span className="swiss-header-tag text-primary">PROCESSING TIMELINE</span>
-          <h3 className="text-sm sm:text-base font-bold text-foreground mt-0.5">
+          <h3 className="text-base sm:text-lg font-bold text-foreground mt-0.5">
             {isFailed
               ? "Analysis Halted With Error"
               : isCancelled
@@ -43,28 +43,28 @@ export function ProcessingTimeline({
               : "Verifying Academic Telemetry & Evidence..."}
           </h3>
           {currentStepMessage && (
-            <p className="text-xs text-muted-foreground mt-1">{currentStepMessage}</p>
+            <p className="text-sm text-muted-foreground mt-1">{currentStepMessage}</p>
           )}
         </div>
 
         <div className="text-right">
-          <span className="swiss-mono text-xl font-bold text-foreground">
+          <span className="font-mono text-2xl font-bold text-foreground">
             {progressPercent}%
           </span>
-          <p className="text-[0.625rem] uppercase tracking-wider text-muted-foreground">Progress</p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground mt-0.5 font-semibold">Progress</p>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+      <div className="h-2.5 w-full bg-muted/60 rounded-full overflow-hidden p-0.5">
         <div
           className={cn(
             "h-full transition-all duration-500 rounded-full",
             isFailed
-              ? "bg-destructive"
+              ? "bg-rose-500"
               : status === "completed"
-              ? "bg-emerald-500"
-              : "bg-primary"
+              ? "bg-gradient-to-r from-emerald-500 to-teal-400 glow-emerald"
+              : "bg-gradient-to-r from-primary via-indigo-500 to-cyan-400 glow-primary"
           )}
           style={{ width: `${progressPercent}%` }}
         />
@@ -77,14 +77,14 @@ export function ProcessingTimeline({
           const isCurrent = currentIndex === idx && status !== "completed";
 
           return (
-            <div key={step.key} className="flex sm:flex-col items-center sm:items-start gap-2.5 text-xs">
+            <div key={step.key} className="flex sm:flex-col items-center sm:items-start gap-2.5 text-sm">
               <div className="flex items-center justify-center">
                 {isDone ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-600 dark:text-emerald-400" />
                 ) : isCurrent ? (
-                  <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                  <Loader2 className="h-4.5 w-4.5 text-primary animate-spin" />
                 ) : (
-                  <CircleDot className="h-4 w-4 text-muted-foreground/40" />
+                  <CircleDot className="h-4.5 w-4.5 text-muted-foreground/40" />
                 )}
               </div>
               <span

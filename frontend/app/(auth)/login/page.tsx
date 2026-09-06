@@ -51,59 +51,59 @@ export default function LoginPage() {
     <div className="relative min-h-screen flex items-center justify-center p-6 bg-background">
       <AmbientBackground />
 
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-card/90 backdrop-blur-xl p-8 shadow-2xl space-y-6">
+      <div className="relative z-10 w-full max-w-md futuristic-card p-8 sm:p-10 shadow-2xl space-y-7 border-primary/30">
         <div className="space-y-2 text-center">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-xs mx-auto mb-1">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-base shadow-xs mx-auto mb-1">
             P•AI
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Sign In to Pedago AI
           </h1>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Enter your faculty credentials to access your intelligence workspaces.
           </p>
         </div>
 
         {/* Quick Demo Login Option */}
-        <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 space-y-2">
+        <div className="rounded-xl border border-primary/30 bg-primary/5 p-4.5 space-y-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-primary flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5" />
+            <span className="text-sm font-bold text-primary flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4" />
               Instant Evaluation Mode
             </span>
-            <span className="text-[0.625rem] uppercase font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+            <span className="text-xs uppercase font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
               PRE-CONFIGURED
             </span>
           </div>
-          <p className="text-[0.6875rem] text-muted-foreground leading-relaxed">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             One-click sign in as Dr. Elena Rostova with complete verified test datasets.
           </p>
           <button
             type="button"
             onClick={handleQuickDemoLogin}
-            className="w-full mt-1 py-2 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+            className="w-full mt-1 py-2.5 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
           >
             <span>Launch Pre-Loaded Faculty Session</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
 
         <div className="relative flex items-center justify-center">
-          <div className="border-t border-border/80 w-full" />
-          <span className="bg-card px-3 text-[0.6875rem] text-muted-foreground uppercase font-mono tracking-wider">
+          <div className="border-t border-border w-full" />
+          <span className="bg-card px-3 text-xs text-muted-foreground uppercase font-mono tracking-wider">
             Or Sign In with Email
           </span>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
           {errorMessage && (
-            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+            <div className="p-3.5 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground">Institutional Email</label>
+            <label className="text-sm font-semibold text-foreground">Institutional Email</label>
             <div className="relative">
               <Mail className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
@@ -112,22 +112,22 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="faculty@university.edu"
-                className="w-full text-xs rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background pl-10 pr-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground">Password</label>
+            <label className="text-sm font-semibold text-foreground">Password</label>
             <div className="relative">
-              <Lock className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Lock className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full text-xs rounded-lg border border-border bg-background pl-9 pr-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full text-sm rounded-xl border border-border bg-background pl-10 pr-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>
@@ -135,13 +135,13 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg bg-foreground text-background text-xs font-bold hover:bg-foreground/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-primary via-indigo-600 to-cyan-500 text-white text-sm font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <span>Sign In with Password</span>}
           </button>
         </form>
 
-        <div className="text-center text-xs text-muted-foreground pt-1">
+        <div className="text-center text-sm text-muted-foreground pt-1">
           Need a faculty account?{" "}
           <Link href="/signup" className="text-primary font-semibold hover:underline">
             Register Department

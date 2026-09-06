@@ -74,49 +74,49 @@ export function DocumentDropzone({
       <div
         {...getRootProps()}
         className={cn(
-          "flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 sm:p-8 text-center transition-all cursor-pointer",
+          "flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-7 sm:p-9 text-center transition-all cursor-pointer relative overflow-hidden",
           isDragActive
-            ? "border-primary bg-primary/5 scale-[1.005]"
-            : "border-border hover:border-primary/50 hover:bg-muted/40 bg-card"
+            ? "border-primary bg-primary/10 glow-primary scale-[1.005]"
+            : "border-border/80 hover:border-primary/60 hover:bg-primary/5 bg-background"
         )}
       >
         <input {...getInputProps()} />
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary mb-3 shadow-xs">
           <UploadCloud className="h-6 w-6" />
         </div>
-        <p className="text-xs sm:text-sm font-semibold text-foreground">
+        <p className="text-sm sm:text-base font-semibold text-foreground">
           {isDragActive ? "Drop academic documents here..." : "Click or drag documents to upload"}
         </p>
-        <p className="text-[0.6875rem] text-muted-foreground mt-1 max-w-sm">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-sm leading-relaxed">
           {helperText}
         </p>
       </div>
 
       {fileList.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {fileList.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-2.5 rounded-lg border border-border bg-card text-xs"
+              className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background text-sm shadow-2xs"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <File className="h-4 w-4 text-primary shrink-0" />
+              <div className="flex items-center gap-3 min-w-0">
+                <File className="h-4.5 w-4.5 text-primary shrink-0" />
                 <div className="truncate">
-                  <p className="font-medium text-foreground truncate">{item.file.name}</p>
-                  <p className="text-[0.625rem] text-muted-foreground">{formatFileSize(item.file.size)}</p>
+                  <p className="font-semibold text-foreground truncate">{item.file.name}</p>
+                  <p className="text-xs text-muted-foreground">{formatFileSize(item.file.size)}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 text-[0.625rem] text-emerald-600 dark:text-emerald-400 font-medium">
+              <div className="flex items-center gap-2.5">
+                <span className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-500/10 px-2.5 py-1 rounded-md">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   Ready
                 </span>
                 <button
                   onClick={(e) => removeFile(item.id, e)}
-                  className="p-1 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="p-1 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             </div>

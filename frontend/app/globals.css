@@ -2,149 +2,179 @@
 
 @layer base {
   :root {
-    --background: 40 15% 98%;
-    --foreground: 222 47% 11%;
+    /* Light Futuristic Theme - Crisp, vibrant, high-contrast */
+    --background: 220 25% 97%;
+    --foreground: 224 50% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 224 50% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 224 50% 10%;
 
-    --primary: 221 83% 53%;
+    --primary: 234 89% 62%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 220 20% 92%;
+    --secondary-foreground: 224 50% 12%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 20% 94%;
+    --muted-foreground: 220 16% 42%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 234 89% 96%;
+    --accent-foreground: 234 89% 55%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 88%;
-    --input: 214.3 31.8% 88%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 220 18% 86%;
+    --input: 220 18% 86%;
+    --ring: 234 89% 62%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Swiss Editorial Palette */
-    --surface-sunken: 40 12% 95%;
+    /* High-contrast solid layers (NOT washed-out) */
+    --surface-sunken: 220 25% 94%;
     --surface-elevated: 0 0% 100%;
-    --surface-glass: 0 0% 100% / 0.8;
-    --border-subtle: 220 13% 91%;
-    --border-strong: 220 13% 80%;
+    --border-subtle: 220 16% 88%;
+    --border-strong: 220 20% 75%;
 
-    /* Aurora Glows */
+    /* Futuristic Gradients - 100% Solid (Zero Glassmorphism) */
+    --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+    --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+    --gradient-card: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+
+    /* Ambient Aurora for Light */
     --aurora-1: rgba(99, 102, 241, 0.12);
-    --aurora-2: rgba(14, 165, 233, 0.12);
+    --aurora-2: rgba(14, 165, 233, 0.1);
     --aurora-3: rgba(168, 85, 247, 0.08);
-
-    /* Confidence Tokens */
-    --confidence-high: 142 71% 45%;
-    --confidence-medium: 38 92% 50%;
-    --confidence-low: 0 84% 60%;
   }
 
   .dark {
-    /* Deep Navy / Charcoal / Graphite - Never pure black */
-    --background: 222 35% 8%;
+    /* Dark Cosmic Futuristic Theme - Deep obsidian navy, solid and high-contrast */
+    --background: 228 48% 5%;
     --foreground: 210 40% 98%;
 
-    --card: 222 32% 11%;
+    /* 100% Solid Opaque Cards - Zero Glassmorphism, Maximum Legibility */
+    --card: 224 35% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 34% 10%;
+    --popover: 224 35% 12%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 234 89% 65%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 217 33% 18%;
+    --secondary: 226 30% 16%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217 33% 16%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 226 30% 15%;
+    --muted-foreground: 218 25% 75%;
 
-    --accent: 217 33% 16%;
+    --accent: 226 30% 16%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 28% 18%;
-    --input: 217 28% 18%;
-    --ring: 224 76% 58%;
+    --border: 224 25% 20%;
+    --input: 224 25% 20%;
+    --ring: 234 89% 65%;
 
-    /* Dark Swiss Editorial Palette */
-    --surface-sunken: 222 38% 6%;
-    --surface-elevated: 222 30% 13%;
-    --surface-glass: 222 32% 11% / 0.75;
-    --border-subtle: 217 28% 18%;
-    --border-strong: 217 28% 28%;
+    /* Futuristic Solid Layering */
+    --surface-sunken: 228 50% 4%;
+    --surface-elevated: 224 35% 13%;
+    --border-subtle: 224 25% 18%;
+    --border-strong: 234 60% 40%;
 
-    /* Aurora Glows for Dark */
-    --aurora-1: rgba(99, 102, 241, 0.2);
-    --aurora-2: rgba(14, 165, 233, 0.18);
-    --aurora-3: rgba(168, 85, 247, 0.14);
+    /* 100% Solid Cyber Gradients (NO transparency or blur) */
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+    --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+    --gradient-card: linear-gradient(180deg, #121929 0%, #0d1322 100%);
 
-    /* Confidence Tokens */
-    --confidence-high: 142 70% 50%;
-    --confidence-medium: 38 92% 55%;
-    --confidence-low: 0 84% 65%;
+    /* Ambient Aurora for Dark */
+    --aurora-1: rgba(99, 102, 241, 0.22);
+    --aurora-2: rgba(6, 182, 212, 0.18);
+    --aurora-3: rgba(139, 92, 246, 0.15);
   }
 }
 
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  font-size: 0.9375rem; /* 15px default base font size for medium readability */
+  line-height: 1.6;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Swiss Grid & Typography */
+/* Futuristic Typography & Monospace Accents - Medium readable size */
 .swiss-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .swiss-header-tag {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.6875rem;
+  font-size: 0.75rem; /* Upgraded from 0.6875rem to 12px clean legible size */
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-weight: 600;
-  color: hsl(var(--muted-foreground));
+  font-weight: 700;
 }
 
-/* Glassmorphism utility */
-.glass-panel {
-  background: hsl(var(--surface-glass));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid hsl(var(--border-subtle));
+/* 100% Solid Futuristic Cards (Zero Glassmorphism, crisp and user-friendly) */
+.futuristic-card {
+  background: var(--gradient-card);
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.glass-header {
-  background: hsl(var(--background) / 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid hsl(var(--border));
+.futuristic-card:hover {
+  border-color: hsl(var(--border-strong));
+  box-shadow: 0 6px 24px -2px rgba(99, 102, 241, 0.15);
 }
 
-/* Bento Grid */
+/* Futuristic Glow Utilities */
+.glow-primary {
+  box-shadow: 0 0 25px -4px rgba(99, 102, 241, 0.4);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.35);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.35);
+}
+
+.glow-amber {
+  box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.35);
+}
+
+/* Gradient Text */
+.gradient-text-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* De-compacted Bento Grid */
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: 1.75rem;
 }
 
-/* Print Styles for Faculty Reports */
+/* Print Styles */
 @media print {
   body {
     background: #ffffff !important;
@@ -160,27 +190,27 @@ body {
   }
 }
 
-/* TipTap Editor Styles */
+/* TipTap Editor */
 .tiptap-content {
   outline: none;
 }
 .tiptap-content p {
-  margin-bottom: 0.75rem;
-  line-height: 1.625;
+  margin-bottom: 0.875rem;
+  line-height: 1.75;
 }
 .tiptap-content h1, .tiptap-content h2, .tiptap-content h3 {
-  font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
 }
 .tiptap-content ul, .tiptap-content ol {
-  padding-left: 1.5rem;
-  margin-bottom: 0.75rem;
+  padding-left: 1.75rem;
+  margin-bottom: 0.875rem;
 }
 .tiptap-content blockquote {
   border-left: 3px solid hsl(var(--primary));
-  padding-left: 1rem;
+  padding-left: 1.25rem;
   font-style: italic;
   color: hsl(var(--muted-foreground));
 }

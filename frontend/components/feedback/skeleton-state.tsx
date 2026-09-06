@@ -8,7 +8,7 @@ interface SkeletonStateProps {
 
 export function SkeletonState({ className, rows = 4 }: SkeletonStateProps) {
   return (
-    <div className={cn("space-y-4 p-6 rounded-xl border border-border bg-card animate-pulse", className)}>
+    <div className={cn("futuristic-card p-7 sm:p-8 space-y-5 animate-pulse", className)}>
       <div className="flex items-center justify-between">
         <div className="h-5 w-1/3 bg-muted rounded-md" />
         <div className="h-4 w-20 bg-muted rounded-md" />
