@@ -1,4 +1,6 @@
-// Pedago AI Shared Domain Contracts
+// Pedago AI Shared Domain Contracts & Database Types
+
+export * from './database.types.js';
 
 export type ModuleKey =
   | "research"
@@ -82,6 +84,15 @@ export interface Finding {
   evidence: EvidenceReference[];
   limitations: string[];
   requiresHumanReview: boolean;
+}
+
+export interface AnalysisCreateInput {
+  workspaceId: string;
+  type: AnalysisType;
+  title: string;
+  documentIds?: string[];
+  input?: Record<string, unknown>;
+  settings?: Record<string, unknown>;
 }
 
 export interface AnalysisRecord {
